@@ -1,14 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚡ Security Verification</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+<title>SUPER VERIFY PRO</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
 *{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --cyan:#00f5ff;
+  --purple:#a855f7;
+  --green:#00ff9d;
+  --red:#ff3864;
+  --bg:#050611;
+}
 
 body{
   min-height:100vh;
@@ -16,12 +24,13 @@ body{
   align-items:center;
   justify-content:center;
   padding:20px;
-  font-family:'Poppins',sans-serif;
-  color:#fff;
-  background:
-    radial-gradient(ellipse at 50% 0%,#172554 0%,transparent 55%),
-    #030712;
   overflow-x:hidden;
+  color:#fff;
+  font-family:'Rajdhani',sans-serif;
+  background:
+    radial-gradient(ellipse at 15% 15%,#251052 0%,transparent 40%),
+    radial-gradient(ellipse at 85% 85%,#062c43 0%,transparent 40%),
+    var(--bg);
 }
 
 body:before{
@@ -29,443 +38,544 @@ body:before{
   position:fixed;
   inset:0;
   pointer-events:none;
-  opacity:.17;
   background-image:
-    linear-gradient(#38bdf8 1px,transparent 1px),
-    linear-gradient(90deg,#38bdf8 1px,transparent 1px);
-  background-size:35px 35px;
-  mask-image:linear-gradient(to bottom,#000,transparent 85%);
+    linear-gradient(#00f5ff09 1px,transparent 1px),
+    linear-gradient(90deg,#00f5ff09 1px,transparent 1px);
+  background-size:30px 30px;
+  mask-image:linear-gradient(to bottom,#000,transparent);
 }
 
 .card{
+  position:relative;
   width:100%;
   max-width:430px;
-  padding:30px 23px;
-  position:relative;
-  overflow:hidden;
+  padding:28px 23px 22px;
   text-align:center;
+  overflow:hidden;
+  background:linear-gradient(145deg,#101326f5,#090b18fa);
+  border:1px solid #34345b;
   border-radius:25px;
-  background:linear-gradient(145deg,rgba(15,23,42,.96),rgba(3,7,18,.98));
-  border:1px solid rgba(56,189,248,.35);
-  box-shadow:0 0 35px #0ea5e91c,0 25px 70px #0009;
+  box-shadow:0 25px 80px #0009,0 0 35px #6d28d91c;
   transition:.4s;
 }
 
 .card:before{
   content:"";
   position:absolute;
+  top:0;
+  left:12%;
+  right:12%;
   height:2px;
-  top:0;left:10%;right:10%;
-  background:linear-gradient(90deg,transparent,#38bdf8,#a78bfa,transparent);
-  box-shadow:0 0 20px #38bdf8;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);
+  box-shadow:0 0 20px var(--cyan);
 }
 
-.card.scanning{animation:cardGlow 2s infinite alternate}
-.card.verified{
-  border-color:#22c55e;
-  box-shadow:0 0 35px #22c55e30;
-}
-.card.banned{
-  border-color:#ef4444;
-  box-shadow:0 0 35px #ef444430;
-  animation:shake .4s;
-}
-
-@keyframes cardGlow{
-  from{box-shadow:0 0 15px #38bdf822}
-  to{box-shadow:0 0 35px #38bdf844}
-}
-@keyframes shake{
-  25%{transform:translateX(-5px)}
-  75%{transform:translateX(5px)}
+.topline{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font:9px 'Orbitron',sans-serif;
+  color:#7e86a9;
+  letter-spacing:1px;
+  margin-bottom:26px;
 }
 
-.badge{
-  display:inline-block;
-  font-family:'Orbitron',sans-serif;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:2px;
-  color:#7dd3fc;
-  padding:9px 14px;
-  border:1px solid #38bdf84d;
-  background:#0ea5e918;
-  border-radius:30px;
-  margin-bottom:23px;
+.live{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:var(--green);
 }
-.verified .badge{color:#4ade80;border-color:#22c55e66;background:#22c55e12}
-.banned .badge{color:#f87171;border-color:#ef444466;background:#ef444412}
 
-.icon-wrapper{
-  width:105px;height:105px;
-  margin:0 auto 23px;
+.dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
+  animation:blink 1.2s infinite;
+}
+
+@keyframes blink{50%{opacity:.3}}
+
+.brand{
+  font:800 13px 'Orbitron',sans-serif;
+  letter-spacing:3px;
+  color:#fff;
+  margin-bottom:24px;
+}
+
+.brand span{
+  color:var(--cyan);
+  text-shadow:0 0 16px #00f5ff77;
+}
+
+.scanner{
+  width:124px;
+  height:124px;
+  margin:0 auto 24px;
   border-radius:50%;
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:46px;
-  background:radial-gradient(circle,#0c4a6e66,transparent 70%);
-  border:2px solid #38bdf8;
-  box-shadow:0 0 25px #38bdf833,inset 0 0 20px #38bdf811;
   position:relative;
+  background:radial-gradient(circle,#19264b 0%,#0b1024 65%,#080b17);
+  border:1px solid #00f5ff88;
+  box-shadow:0 0 35px #00f5ff18,inset 0 0 25px #00f5ff15;
 }
 
-.icon-wrapper:before,
-.icon-wrapper:after{
+.scanner:before,.scanner:after{
   content:"";
   position:absolute;
-  inset:-9px;
-  border:1px dashed #38bdf877;
   border-radius:50%;
-  animation:rotate 9s linear infinite;
+  border:1px dashed #00f5ff77;
+  inset:-9px;
+  animation:spin 12s linear infinite;
 }
-.icon-wrapper:after{
-  inset:-16px;
-  border-color:#818cf855;
+
+.scanner:after{
+  inset:-17px;
+  border-color:#a855f755;
   animation-direction:reverse;
-  animation-duration:14s;
+  animation-duration:18s;
 }
-@keyframes rotate{to{transform:rotate(360deg)}}
 
-.scanning .icon-wrapper{
-  animation:pulse 1.6s infinite;
+.scanline{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:50%;
+  border-radius:120px 120px 0 0;
+  background:linear-gradient(to bottom,#00f5ff0a,#00f5ff20);
+  border-bottom:1px solid #00f5ff99;
+  transform-origin:bottom;
+  animation:scan 3s linear infinite;
 }
-@keyframes pulse{
-  50%{box-shadow:0 0 35px #38bdf866,inset 0 0 25px #38bdf822}
-}
-.verified .icon-wrapper{
-  border-color:#22c55e;
-  box-shadow:0 0 30px #22c55e55;
-}
-.verified .icon-wrapper:before{border-color:#4ade8077}
-.banned .icon-wrapper{
-  border-color:#ef4444;
-  box-shadow:0 0 30px #ef444455;
-}
-.banned .icon-wrapper:before{border-color:#ef444477}
 
-h2{
-  font-family:'Orbitron',sans-serif;
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:12px;
+.shield{
+  font-size:48px;
+  position:relative;
+  z-index:2;
+  filter:drop-shadow(0 0 12px #00f5ff66);
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes scan{to{transform:rotate(360deg)}}
+
+.tag{
+  display:inline-block;
+  font:700 9px 'Orbitron',sans-serif;
+  letter-spacing:2px;
+  color:var(--cyan);
+  border:1px solid #00f5ff44;
+  border-radius:5px;
+  padding:8px 12px;
+  background:#00f5ff0a;
+  margin-bottom:15px;
+}
+
+h1{
+  font:800 21px 'Orbitron',sans-serif;
   line-height:1.5;
-  text-shadow:0 0 15px #38bdf833;
+  margin-bottom:12px;
+  letter-spacing:.3px;
 }
-p{
-  font-size:12px;
-  color:#94a3b8;
-  line-height:1.8;
+
+.description{
+  color:#9299b6;
+  font-size:15px;
+  line-height:1.55;
+  min-height:46px;
   margin-bottom:23px;
 }
 
-.progress-box{
-  height:7px;
-  border-radius:20px;
-  background:#1e293b;
-  overflow:hidden;
-  margin-bottom:12px;
-  border:1px solid #334155;
-}
-.progress-bar{
-  height:100%;
-  width:0%;
-  border-radius:20px;
-  background:linear-gradient(90deg,#06b6d4,#818cf8,#c084fc);
-  box-shadow:0 0 15px #38bdf8;
-  transition:width .4s ease;
-}
-.progress-label{
+.progress-info{
   display:flex;
   justify-content:space-between;
-  font-size:10px;
-  color:#64748b;
-  font-family:'Orbitron',sans-serif;
+  align-items:center;
+  font:9px 'Orbitron',sans-serif;
+  color:#8188a8;
+  margin-bottom:9px;
+}
+
+.progress{
+  height:7px;
+  background:#1b2035;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid #292e49;
   margin-bottom:22px;
 }
 
-.info-grid{
+.bar{
+  width:0;
+  height:100%;
+  border-radius:10px;
+  background:linear-gradient(90deg,#00c8ff,#7866ff,#d16aff);
+  box-shadow:0 0 14px #00d9ff99;
+  transition:width .5s;
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:22px;
+}
+
+.step{
+  padding:11px 3px;
+  border:1px solid #252a42;
+  border-radius:10px;
+  background:#0b0e1b;
+  color:#606986;
+  font-size:11px;
+  font-weight:700;
+}
+
+.step .num{
+  display:block;
+  font:10px 'Orbitron',sans-serif;
+  margin-bottom:5px;
+}
+
+.step.active{
+  border-color:#00d9ff66;
+  color:#80f4ff;
+  background:#00d9ff0b;
+}
+
+.step.done{
+  border-color:#00ff9d44;
+  color:#00ff9d;
+}
+
+.info,.api{
   display:none;
   text-align:left;
-  background:#020617aa;
-  border:1px solid #334155;
-  border-radius:15px;
-  padding:14px;
-  margin-bottom:17px;
-  font-size:11px;
+  background:#080b17;
+  border:1px solid #272d47;
+  border-radius:13px;
+  padding:13px;
+  margin-bottom:15px;
 }
-.info-row{
+
+.section-title{
+  color:var(--cyan);
+  font:700 10px 'Orbitron',sans-serif;
+  letter-spacing:1px;
+  margin-bottom:8px;
+}
+
+.row{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
   gap:10px;
   padding:10px 0;
-  border-bottom:1px dashed #334155;
+  border-bottom:1px solid #1c2236;
 }
-.info-row:last-child{border-bottom:0}
-.info-label{color:#64748b}
-.info-val{
+
+.row:last-child{border-bottom:0}
+.label{font-size:12px;color:#7d86a3}
+.value{
+  font:600 11px monospace;
+  color:#e0e7ff;
   text-align:right;
   overflow-wrap:anywhere;
-  color:#e2e8f0;
-  font-family:monospace;
-  font-weight:600;
 }
-.api-box{
-  display:none;
-  background:#020617;
-  border:1px solid #1e293b;
-  border-radius:12px;
-  padding:13px;
-  text-align:left;
-  margin-bottom:18px;
-}
-.api-header{
-  color:#38bdf8;
-  font-size:10px;
+
+.api-head{
   display:flex;
   justify-content:space-between;
   gap:8px;
+  font-size:10px;
+  color:var(--cyan);
   margin-bottom:10px;
 }
+
 pre{
   white-space:pre-wrap;
   overflow-wrap:anywhere;
-  font:11px/1.7 monospace;
-  color:#a5f3fc;
   max-height:180px;
   overflow:auto;
+  color:#9af9ff;
+  font:11px/1.7 monospace;
 }
+
 .btn{
   display:none;
-  width:100%;
   text-decoration:none;
-  color:white;
+  color:#fff;
+  background:linear-gradient(100deg,#075985,#4338ca,#7e22ce);
+  border:1px solid #65dfff66;
+  border-radius:11px;
   padding:15px 12px;
-  border-radius:13px;
-  background:linear-gradient(110deg,#0284c7,#4f46e5);
-  font-size:12px;
-  font-weight:700;
-  letter-spacing:.5px;
-  box-shadow:0 6px 25px #2563eb44;
+  font:700 11px 'Orbitron',sans-serif;
+  letter-spacing:.7px;
+  box-shadow:0 8px 25px #4338ca30;
   transition:.2s;
 }
+
 .btn:active{transform:scale(.97)}
-.btn.banned-btn{
-  background:linear-gradient(110deg,#dc2626,#991b1b);
-}
+
 .footer{
   margin-top:22px;
   padding-top:15px;
-  border-top:1px solid #1e293b;
-  color:#475569;
-  font-size:9px;
+  border-top:1px solid #22263a;
+  color:#515975;
+  font:9px 'Orbitron',sans-serif;
   letter-spacing:1.5px;
 }
-.verified .progress-bar{background:linear-gradient(90deg,#16a34a,#4ade80)}
-.banned .progress-bar{background:linear-gradient(90deg,#dc2626,#fb7185)}
 
-@media(max-width:380px){
-  .card{padding:25px 17px}
-  h2{font-size:17px}
+.verified{border-color:#00ff9d66}
+.verified .scanner{border-color:var(--green);box-shadow:0 0 35px #00ff9d22}
+.verified .scanner:before{border-color:#00ff9d77}
+.verified .tag{color:var(--green);border-color:#00ff9d55}
+.verified .bar{background:linear-gradient(90deg,#00d084,#00ff9d)}
+.verified .btn{background:linear-gradient(100deg,#047857,#059669);border-color:#00ff9d66}
+
+.banned{border-color:#ff386477;animation:shake .35s}
+.banned .scanner{border-color:var(--red);box-shadow:0 0 35px #ff386422}
+.banned .scanner:before{border-color:#ff386477}
+.banned .tag{color:#ff6b87;border-color:#ff386455}
+.banned .btn{background:linear-gradient(100deg,#991b1b,#dc2626);border-color:#ff386477}
+.banned .bar{background:linear-gradient(90deg,#dc2626,#ff3864)}
+
+@keyframes shake{
+  25%{transform:translateX(-4px)}
+  75%{transform:translateX(4px)}
 }
+
+@media(max-width:360px){
+  .card{padding:23px 15px}
+  h1{font-size:18px}
+  .brand{font-size:11px}
+}
+
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important}
 }
 </style>
 </head>
+
 <body>
+<div class="card" id="card">
 
-<div id="card" class="card scanning">
-  <div id="badge" class="badge">✦ SECURITY SYSTEM ✦</div>
-  <div id="icon" class="icon-wrapper">🛡️</div>
-
-  <h2 id="title">DEVICE VERIFICATION</h2>
-  <p id="message">Initializing security protocols...<br>Please wait while verification is in progress.</p>
-
-  <div class="progress-box" id="progressBox">
-    <div class="progress-bar" id="progressBar"></div>
+  <div class="topline">
+    <span>SVP // 01.0</span>
+    <span class="live"><i class="dot"></i> SYSTEM ONLINE</span>
   </div>
-  <div class="progress-label" id="progressLabel">
+
+  <div class="brand">SUPER<span>VERIFY</span> PRO</div>
+
+  <div class="scanner">
+    <div class="scanline" id="scanline"></div>
+    <div class="shield" id="icon">🛡️</div>
+  </div>
+
+  <div class="tag" id="badge">SECURITY PROTOCOL</div>
+
+  <h1 id="title">DEVICE VERIFICATION</h1>
+
+  <p class="description" id="message">
+    Initializing secure verification protocol. Please wait while your request is processed.
+  </p>
+
+  <div class="progress-info" id="progressInfo">
     <span id="stepText">INITIALIZING</span>
-    <span id="percentText">0%</span>
+    <span id="percent">00%</span>
   </div>
 
-  <div class="info-grid" id="infoGrid"></div>
+  <div class="progress" id="progress">
+    <div class="bar" id="bar"></div>
+  </div>
 
-  <div class="api-box" id="apiBox">
-    <div class="api-header">
-      <span>⚡ API RESPONSE</span>
-      <span id="httpCode">WAITING</span>
+  <div class="steps" id="steps">
+    <div class="step active" id="s1"><span class="num">01</span>INITIALIZE</div>
+    <div class="step" id="s2"><span class="num">02</span>DEVICE CHECK</div>
+    <div class="step" id="s3"><span class="num">03</span>VERIFY</div>
+  </div>
+
+  <div class="info" id="info"></div>
+
+  <div class="api" id="api">
+    <div class="api-head">
+      <span>⚡ SERVER RESPONSE</span>
+      <span id="http">WAITING</span>
     </div>
-    <pre id="apiJson"></pre>
+    <pre id="json"></pre>
   </div>
 
-  <a href="#" id="botBtn" class="btn">↗ RETURN TO TELEGRAM</a>
+  <a href="#" class="btn" id="btn">↗ CONTINUE TO TELEGRAM</a>
 
-  <div class="footer">SECURE ACCESS • DEVICE CHECK</div>
+  <div class="footer">ENCRYPTED INTERFACE • SECURE ACCESS</div>
 </div>
 
 <script>
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
-function generateFingerprint(){
-  const raw = [
+function fingerprint(){
+  const raw=[
     navigator.userAgent,
-    screen.width + "x" + screen.height,
+    screen.width+"x"+screen.height,
     screen.colorDepth,
     new Date().getTimezoneOffset(),
-    navigator.hardwareConcurrency || 4
+    navigator.hardwareConcurrency||4
   ].join("|");
 
-  let hash = 0;
+  let hash=0;
   for(let i=0;i<raw.length;i++){
-    hash = ((hash << 5) - hash) + raw.charCodeAt(i);
-    hash |= 0;
+    hash=((hash<<5)-hash)+raw.charCodeAt(i);
+    hash|=0;
   }
-  return "DEV-" + (hash >>> 0).toString(16).toUpperCase();
+  return "DEV-"+(hash>>>0).toString(16).toUpperCase();
 }
 
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
+function safe(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",
     '"':"&quot;","'":"&#39;"
-  })[char]);
+  }[c]));
 }
 
-async function startVerification(){
-  const $ = id => document.getElementById(id);
-  const params = new URLSearchParams(location.search);
-  const userId = params.get("userid");
-  const botName = (params.get("bot") || "MyTelegramBot").replace(/^@/,"");
+function setProgress(n,label,active){
+  $("bar").style.width=n+"%";
+  $("percent").textContent=String(n).padStart(2,"0")+"%";
+  $("stepText").textContent=label;
 
-  const card = $("card");
-  const pBar = $("progressBar");
+  ["s1","s2","s3"].forEach((id,i)=>{
+    $(id).className="step "+(i+1<active?"done":i+1===active?"active":"");
+  });
+}
 
-  function progress(value,label){
-    pBar.style.width = value + "%";
-    $("percentText").textContent = value + "%";
-    $("stepText").textContent = label;
-  }
+function fail(title,message){
+  $("card").className="card banned";
+  $("badge").textContent="ACCESS / ERROR";
+  $("icon").textContent="⚠️";
+  $("title").textContent=title;
+  $("message").textContent=message;
+  $("progress").style.display="none";
+  $("progressInfo").style.display="none";
+  $("steps").style.display="none";
+  $("scanline").style.display="none";
+}
 
-  function showError(title,message){
-    card.className = "card banned";
-    $("badge").textContent = "⚠ VERIFICATION ERROR";
-    $("icon").textContent = "⚠️";
-    $("title").textContent = title;
-    $("message").textContent = message;
-    $("progressBox").style.display = "none";
-    $("progressLabel").style.display = "none";
-  }
+async function start(){
+  const params=new URLSearchParams(location.search);
+  const userid=params.get("userid");
+  const bot=(params.get("bot")||"MyTelegramBot").replace(/^@/,"");
 
-  if(!userId || !/^\d+$/.test(userId) ||
-     !/^[a-zA-Z0-9_]{5,32}$/.test(botName)){
-    showError("INVALID VERIFICATION LINK",
+  if(!userid||!/^\d+$/.test(userid)||
+     !/^[a-zA-Z0-9_]{5,32}$/.test(bot)){
+    fail("INVALID VERIFICATION LINK",
       "Please open a valid verification link from your Telegram bot.");
     return;
   }
 
-  progress(20,"INITIALIZING");
-  await sleep(350);
+  const deviceId=fingerprint();
 
-  $("message").textContent = "Preparing device verification...";
-  progress(45,"DEVICE CHECK");
-  await sleep(350);
+  setProgress(20,"INITIALIZING",1);
+  await sleep(400);
 
-  $("message").textContent = "Connecting to the security server...";
-  progress(70,"SERVER CHECK");
-  await sleep(350);
+  $("message").textContent="Preparing the verification request...";
+  setProgress(45,"DEVICE CHECK",2);
+  await sleep(400);
 
-  const deviceId = generateFingerprint();
+  $("message").textContent="Contacting the verification server...";
+  setProgress(75,"SERVER CHECK",3);
 
   try{
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(),10000);
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),10000);
 
     let res;
     try{
-      res = await fetch("/api/verify",{
+      res=await fetch("/api/verify",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         signal:controller.signal,
         body:JSON.stringify({
-          userid:userId,
-          bot:botName,
+          userid:userid,
+          bot:bot,
           deviceId:deviceId
         })
       });
     }finally{
-      clearTimeout(timeout);
+      clearTimeout(timer);
     }
 
     let data;
     try{
-      data = await res.json();
+      data=await res.json();
     }catch{
-      throw new Error("Invalid server response.");
+      throw new Error("Invalid server response");
     }
 
-    $("progressBox").style.display = "none";
-    $("progressLabel").style.display = "none";
-    $("infoGrid").style.display = "block";
-    $("apiBox").style.display = "block";
-    $("apiJson").textContent = JSON.stringify(data,null,2);
-    $("httpCode").textContent = "HTTP " + res.status;
-    $("botBtn").style.display = "block";
-    $("botBtn").href = "https://t.me/" + botName;
+    $("progress").style.display="none";
+    $("progressInfo").style.display="none";
+    $("steps").style.display="none";
 
-    const banned = !res.ok || data.status === "banned";
+    $("api").style.display="block";
+    $("json").textContent=JSON.stringify(data,null,2);
+    $("http").textContent="HTTP "+res.status;
 
-    if(banned){
-      card.className = "card banned";
-      $("badge").textContent = "✖ ACCESS DENIED";
-      $("icon").textContent = "🚫";
-      $("title").textContent = "VERIFICATION FAILED";
-      $("message").textContent =
-        data.message || "Access was denied by the verification server.";
-      $("httpCode").style.color = "#f87171";
-      $("botBtn").className = "btn banned-btn";
-      $("botBtn").textContent = "↗ RETURN TO @" + botName;
-    }else if(data.status === "verified" || data.status === "success"){
-      card.className = "card verified";
-      $("badge").textContent = "✔ ACCESS GRANTED";
-      $("icon").textContent = "✅";
-      $("title").textContent = "VERIFICATION SUCCESSFUL";
-      $("message").textContent =
-        "Your verification has been accepted by the server.";
-      $("httpCode").style.color = "#4ade80";
-      $("botBtn").textContent = "🚀 CONTINUE TO @" + botName;
+    const denied=!res.ok||data.status==="banned";
+
+    if(denied){
+      $("card").className="card banned";
+      $("badge").textContent="ACCESS DENIED";
+      $("icon").textContent="🚫";
+      $("title").textContent="ACCESS RESTRICTED";
+      $("message").textContent=data.message||
+        "The verification server denied this request.";
+      $("btn").textContent="↗ RETURN TO @"+bot;
+    }else if(data.status==="verified"||data.status==="success"){
+      $("card").className="card verified";
+      $("badge").textContent="IDENTITY VERIFIED";
+      $("icon").textContent="✓";
+      $("title").textContent="VERIFICATION COMPLETE";
+      $("message").textContent=
+        "Verification accepted. You may now continue to your Telegram bot.";
+      $("btn").textContent="✦ CONTINUE TO @"+bot;
     }else{
-      showError("VERIFICATION PENDING",
-        "The server did not confirm verification. Please try again.");
-      $("apiBox").style.display = "block";
-      $("apiJson").textContent = JSON.stringify(data,null,2);
-      $("httpCode").textContent = "HTTP " + res.status;
+      fail("VERIFICATION PENDING",
+        "The server has not confirmed verification. Please try again.");
+      $("api").style.display="block";
+      $("json").textContent=JSON.stringify(data,null,2);
+      $("http").textContent="HTTP "+res.status;
       return;
     }
 
-    const rows = [
-      ["BOT NAME","@" + botName],
-      ["USER ID",userId],
+    $("info").style.display="block";
+    const rows=[
+      ["BOT NAME","@"+bot],
+      ["USER ID",userid],
       ["DEVICE ID",deviceId],
-      ["RESULT",banned ? "ACCESS DENIED" : "VERIFIED"]
+      ["STATUS",denied?"ACCESS DENIED":"VERIFIED"]
     ];
 
-    $("infoGrid").innerHTML = rows.map(([label,value]) =>
-      '<div class="info-row"><span class="info-label">' +
-      escapeHTML(label) + '</span><span class="info-val">' +
-      escapeHTML(value) + '</span></div>'
-    ).join("");
+    $("info").innerHTML=
+      '<div class="section-title">▣ VERIFICATION DETAILS</div>'+
+      rows.map(([label,value])=>
+        '<div class="row"><span class="label">'+safe(label)+
+        '</span><span class="value">'+safe(value)+'</span></div>'
+      ).join("");
+
+    $("btn").href="https://t.me/"+bot;
+    $("btn").style.display="block";
 
   }catch(error){
-    showError("SERVER CONNECTION ERROR",
-      error.name === "AbortError"
-      ? "The verification server timed out. Please try again."
-      : "Could not verify your request. Please check the server and try again.");
+    fail("CONNECTION FAILED",
+      error.name==="AbortError"
+      ?"The server timed out. Please try again."
+      :"Unable to connect to the verification server.");
   }
 }
 
-startVerification();
+start();
 </script>
 </body>
 </html>
