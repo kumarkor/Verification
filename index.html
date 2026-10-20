@@ -28,22 +28,21 @@
     }
 
     .card {
-      background: rgba(13, 20, 36, 0.85);
+      background: rgba(13, 20, 36, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      padding: 30px 22px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 32px 24px;
       border-radius: 28px;
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       text-align: center;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.1);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(56, 189, 248, 0.15);
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
     }
 
-    /* Cyber Corner accents */
     .card::before {
       content: '';
       position: absolute;
@@ -58,10 +57,9 @@
       100% { transform: translateX(100%); }
     }
 
-    /* States Theme */
-    .card.scanning { border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); }
-    .card.verified { border-color: rgba(34, 197, 94, 0.6); box-shadow: 0 0 50px rgba(34, 197, 94, 0.3); }
-    .card.banned { border-color: rgba(239, 68, 68, 0.7); box-shadow: 0 0 50px rgba(239, 68, 68, 0.35); animation: glitchCard 0.4s ease; }
+    .card.scanning { border-color: rgba(56, 189, 248, 0.5); box-shadow: 0 0 45px rgba(56, 189, 248, 0.25); }
+    .card.verified { border-color: rgba(34, 197, 94, 0.7); box-shadow: 0 0 55px rgba(34, 197, 94, 0.35); }
+    .card.banned { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 0 55px rgba(239, 68, 68, 0.4); animation: glitchCard 0.4s ease; }
 
     @keyframes glitchCard {
       0%, 100% { transform: translate(0); }
@@ -71,41 +69,40 @@
       80% { transform: translate(3px, 3px); }
     }
 
-    /* Radar/Pulse Icon Box */
     .icon-glow {
-      width: 92px;
-      height: 92px;
+      width: 95px;
+      height: 95px;
       margin: 0 auto 20px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
+      font-size: 44px;
       position: relative;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, rgba(15, 23, 42, 0.8) 70%);
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.85) 70%);
       border: 2px solid #38bdf8;
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
     }
     
     .scanning .icon-glow { animation: radarPulse 1.8s infinite ease-in-out; }
-    .verified .icon-glow { background: radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, rgba(15, 23, 42, 0.8) 70%); border-color: #22c55e; box-shadow: 0 0 35px rgba(34, 197, 94, 0.6); }
-    .banned .icon-glow { background: radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, rgba(15, 23, 42, 0.8) 70%); border-color: #ef4444; box-shadow: 0 0 35px rgba(239, 68, 68, 0.6); }
+    .verified .icon-glow { background: radial-gradient(circle, rgba(34, 197, 94, 0.35) 0%, rgba(15, 23, 42, 0.85) 70%); border-color: #22c55e; box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
+    .banned .icon-glow { background: radial-gradient(circle, rgba(239, 68, 68, 0.35) 0%, rgba(15, 23, 42, 0.85) 70%); border-color: #ef4444; box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); }
 
     @keyframes radarPulse {
       0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
-      70% { box-shadow: 0 0 0 22px rgba(56, 189, 248, 0); }
+      70% { box-shadow: 0 0 0 25px rgba(56, 189, 248, 0); }
       100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
     }
 
     .badge {
       display: inline-block;
-      padding: 5px 16px;
+      padding: 6px 18px;
       border-radius: 30px;
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       font-family: 'Orbitron', sans-serif;
       background: rgba(56, 189, 248, 0.15);
       color: #38bdf8;
@@ -116,15 +113,13 @@
 
     h2 { 
       font-family: 'Orbitron', sans-serif;
-      font-size: 20px; 
+      font-size: 21px; 
       font-weight: 700; 
       margin-bottom: 8px; 
-      letter-spacing: 0.5px;
     }
     
-    p { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 20px; }
+    p { font-size: 13.5px; color: #94a3b8; line-height: 1.6; margin-bottom: 20px; }
 
-    /* Futuristic Progress Bar */
     .progress-container {
       width: 100%;
       height: 8px;
@@ -141,20 +136,18 @@
       background: linear-gradient(90deg, #0ea5e9, #6366f1, #38bdf8);
       border-radius: 8px;
       transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
     }
 
-    /* Details Panel */
     .details-box {
-      background: rgba(3, 7, 18, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(3, 7, 18, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 14px;
       text-align: left;
-      font-size: 12px;
+      font-size: 12.5px;
       margin-bottom: 16px;
       display: none;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
     }
     .row {
       display: flex;
@@ -166,26 +159,23 @@
     .label { color: #64748b; font-weight: 500; }
     .value { font-weight: 600; color: #e2e8f0; font-family: 'Fira Code', monospace; }
 
-    /* Terminal API Box */
     .terminal-box {
       text-align: left;
       background: #010409;
-      border: 1px solid rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.25);
       border-radius: 14px;
       padding: 12px 14px;
       margin-bottom: 20px;
       display: none;
-      position: relative;
     }
     .terminal-header {
-      font-size: 10.5px;
+      font-size: 11px;
       color: #38bdf8;
       font-weight: 600;
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       font-family: 'Orbitron', sans-serif;
-      letter-spacing: 0.5px;
     }
     pre {
       font-family: 'Fira Code', monospace;
@@ -195,17 +185,14 @@
       white-space: pre-wrap;
       word-break: break-all;
       max-height: 130px;
-      scrollbar-width: thin;
-      scrollbar-color: #38bdf8 #010409;
     }
 
-    /* Glowing Action Button */
     .action-btn {
       display: none;
       width: 100%;
       padding: 14px;
       border-radius: 14px;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 700;
       text-decoration: none;
       color: #fff;
@@ -217,14 +204,10 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .action-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(34, 197, 94, 0.6); }
-    .action-btn:active { transform: scale(0.97); }
-    
     .action-btn.banned-btn {
       background: linear-gradient(135deg, #ef4444, #991b1b);
       box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
     }
-    .action-btn.banned-btn:hover { box-shadow: 0 15px 30px rgba(239, 68, 68, 0.6); }
-
     .watermark {
       margin-top: 15px;
       font-size: 10px;
@@ -241,7 +224,7 @@
     <div id="badge" class="badge">SECURE PROTOCOL</div>
     <div class="icon-glow" id="icon">🛡️</div>
     <h2 id="title">Initializing Scan...</h2>
-    <p id="message">Establishing secure handshake & generating hardware device fingerprint...</p>
+    <p id="message">Establishing secure connection & generating hardware device fingerprint...</p>
 
     <div class="progress-container" id="progressBox">
       <div class="progress-fill" id="progressBar"></div>
@@ -258,7 +241,6 @@
     </div>
 
     <a href="#" id="redirectBtn" class="action-btn">🚀 RETURN TO TELEGRAM BOT</a>
-    
     <div class="watermark">SECURE ENCRYPTED GATEWAY</div>
   </div>
 
@@ -268,7 +250,7 @@
       const ctx = canvas.getContext('2d');
       ctx.textBaseline = 'top';
       ctx.font = '14px Arial';
-      ctx.fillText('Kumar_Security_Protocol_v2', 2, 2);
+      ctx.fillText('Kumar_Security_Protocol_v3', 2, 2);
       const rawData = [
         navigator.userAgent,
         screen.width + 'x' + screen.height,
@@ -311,18 +293,17 @@
         badge.innerText = 'SECURITY ERROR';
         icon.innerText = '⚠️';
         title.innerText = 'Missing User ID';
-        message.innerText = 'Access denied! Please open this verification link directly via your Telegram bot.';
+        message.innerText = 'Access denied! Please open this link directly via your Telegram bot.';
         progressBox.style.display = 'none';
         return;
       }
 
-      // Smooth Loader Animation Steps
-      progressBar.style.width = '30%';
+      progressBar.style.width = '35%';
       await wait(400);
-      message.innerText = 'Extracting hardware fingerprint & device traits...';
-      progressBar.style.width = '65%';
+      message.innerText = 'Extracting hardware device traits...';
+      progressBar.style.width = '70%';
       await wait(500);
-      message.innerText = 'Connecting to backend security server (@' + botName + ')...';
+      message.innerText = 'Verifying with Firebase Security Database (@' + botName + ')...';
       progressBar.style.width = '100%';
       await wait(400);
 
@@ -332,9 +313,6 @@
         localStorage.setItem('kumar_device_token', deviceId);
       }
 
-      const storageKey = `verified_user_${botName.toLowerCase()}`;
-      const previousUser = localStorage.getItem(storageKey);
-
       try {
         const response = await fetch('/api/verify', {
           method: 'POST',
@@ -342,8 +320,7 @@
           body: JSON.stringify({
             userid: userId,
             bot: botName,
-            deviceId: deviceId,
-            previousUser: previousUser
+            deviceId: deviceId
           })
         });
 
@@ -362,7 +339,7 @@
           badge.innerText = 'ACCESS BLOCKED 🚫';
           icon.innerText = '🚫';
           title.innerText = 'Device Banned!';
-          message.innerText = 'Multiple distinct account IDs detected on this device for this bot. Permanent restriction applied.';
+          message.innerText = 'Multiple distinct Telegram accounts detected on this device. Permanent restriction applied.';
           httpStatus.innerText = 'HTTP 403 FORBIDDEN';
           httpStatus.style.color = '#f87171';
           
@@ -371,13 +348,12 @@
 
           detailsGrid.innerHTML = `
             <div class="row"><span class="label">Target Bot</span><span class="value">@${botName}</span></div>
-            <div class="row"><span class="label">Primary User</span><span class="value">${result.first_userid}</span></div>
+            <div class="row"><span class="label">First User ID</span><span class="value">${result.first_userid}</span></div>
             <div class="row"><span class="label">Blocked User</span><span class="value" style="color:#f87171">${userId}</span></div>
             <div class="row"><span class="label">Device Hash</span><span class="value">${deviceId}</span></div>
             <div class="row"><span class="label">Action</span><span class="value" style="color:#f87171">DIRECT BANNED 🚫</span></div>
           `;
         } else {
-          localStorage.setItem(storageKey, userId);
           card.className = 'card verified';
           badge.innerText = 'SECURE & VERIFIED ✅';
           icon.innerText = '✅';
