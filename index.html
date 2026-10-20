@@ -2,217 +2,602 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SUPER VERIFY PRO</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070812">
+<title>SUPER VERIFY PRO MAX</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--cyan:#00eaff;--purple:#985cff;--green:#00ffa3;--red:#ff416c}
-body{
- min-height:100vh;display:flex;align-items:center;justify-content:center;
- padding:18px;background:#050611;color:#fff;font-family:Rajdhani,sans-serif;
- background-image:radial-gradient(ellipse at 20% 0%,#24104c,transparent 45%),radial-gradient(ellipse at 100% 100%,#062c42,transparent 45%);
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg:#070812;
+  --cyan:#00f5ff;
+  --purple:#a855f7;
+  --green:#00ff9d;
+  --red:#ff4564;
+  --muted:#98a5c2;
 }
-.card{
- position:relative;width:100%;max-width:430px;padding:27px 21px 22px;
- overflow:hidden;text-align:center;border-radius:24px;
- background:linear-gradient(145deg,#111629f5,#080b16fa);
- border:1px solid #00eaff44;box-shadow:0 25px 80px #0009,0 0 35px #00eaff12;
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  min-height:100vh;
+  color:#f5f7ff;
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(ellipse at top left,#291044,transparent 45%),
+    radial-gradient(ellipse at bottom right,#063044,transparent 40%),
+    var(--bg);
 }
-.card:before{content:"";position:absolute;top:0;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent)}
-.top{display:flex;justify-content:space-between;font:9px Orbitron,sans-serif;letter-spacing:1px;color:#8994b5;margin-bottom:25px}
-.live{color:var(--green)}
-.brand{font:800 15px Orbitron,sans-serif;letter-spacing:2px;margin-bottom:24px}
-.brand span{color:var(--cyan);text-shadow:0 0 16px #00eaff88}
-.orb{width:112px;height:112px;margin:0 auto 24px;border:1px solid #00eaff99;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle,#17304c,#090d1d 70%);box-shadow:0 0 30px #00eaff22,inset 0 0 22px #00eaff18}
-.orb:before,.orb:after{content:"";position:absolute;inset:-9px;border:1px dashed #00eaff88;border-radius:50%;animation:spin 12s linear infinite}
-.orb:after{inset:-16px;border-color:#985cff66;animation-direction:reverse;animation-duration:18s}
-.symbol{font-size:45px;z-index:1;filter:drop-shadow(0 0 10px #00eaff66)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.badge{display:inline-block;padding:8px 12px;border:1px solid #00eaff44;border-radius:5px;color:var(--cyan);background:#00eaff0b;font:700 9px Orbitron,sans-serif;letter-spacing:1.5px;margin-bottom:14px}
-h1{font:800 20px Orbitron,sans-serif;line-height:1.5;margin-bottom:10px}
-.desc{font-size:15px;line-height:1.6;color:#9ba5c1;margin-bottom:22px}
-.progress-info{display:flex;justify-content:space-between;color:#8a94b1;font:9px Orbitron,sans-serif;margin-bottom:9px}
-.progress{height:7px;background:#20263b;border-radius:9px;overflow:hidden;margin-bottom:19px}
-.bar{height:100%;width:0;background:linear-gradient(90deg,#00d9ff,#8b5cf6);box-shadow:0 0 15px #00eaff;transition:width .5s}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:20px}
-.step{border:1px solid #252c43;border-radius:9px;padding:10px 2px;color:#66708e;font-size:11px;font-weight:700;background:#0a0e1b}
-.step strong{display:block;font:10px Orbitron,sans-serif;margin-bottom:5px}
-.step.active{border-color:#00eaff66;color:#7df7ff;background:#00eaff0a}
-.step.done{border-color:#00ffa344;color:var(--green)}
-.rules{text-align:left;padding:14px;border:1px solid #292e47;border-radius:13px;background:#080c18;margin-bottom:17px}
-.rule-title{font:700 10px Orbitron,sans-serif;letter-spacing:1px;color:var(--cyan);margin-bottom:11px}
-.rule{display:flex;align-items:center;gap:9px;font-size:13px;padding:7px 0;color:#d6dcef;border-bottom:1px solid #20263a}
-.rule:last-child{border:0}
-.rule .icon{margin-left:auto;font-size:17px}
-.info,.api{display:none;text-align:left;padding:13px;border:1px solid #293149;background:#080c18;border-radius:12px;margin-bottom:15px}
-.row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #222940;font-size:12px}
-.row:last-child{border:0}
-.label{color:#8490af}.value{text-align:right;color:#edf4ff;overflow-wrap:anywhere;font-family:monospace;font-size:11px}
-.api-head{display:flex;justify-content:space-between;color:var(--cyan);font-size:10px;margin-bottom:10px}
-pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#9df8ff;font:11px/1.6 monospace;max-height:170px;overflow:auto}
-.btn{display:none;text-decoration:none;color:white;padding:14px;border-radius:10px;background:linear-gradient(100deg,#075985,#4338ca,#7e22ce);font:700 11px Orbitron,sans-serif;letter-spacing:.5px}
-.footer{border-top:1px solid #252a3d;padding-top:15px;margin-top:20px;color:#59627e;font:9px Orbitron,sans-serif;letter-spacing:1px}
-.verified{border-color:#00ffa366;box-shadow:0 0 35px #00ffa315}
-.verified .badge{color:var(--green);border-color:#00ffa355}
-.verified .orb{border-color:var(--green);box-shadow:0 0 30px #00ffa322}
-.verified .bar{background:linear-gradient(90deg,#00c982,#00ffa3)}
-.verified .btn{background:linear-gradient(100deg,#047857,#059669)}
-.banned{border-color:#ff416c88;box-shadow:0 0 35px #ff416c20}
-.banned .badge{color:#ff7893;border-color:#ff416c66}
-.banned .orb{border-color:var(--red);box-shadow:0 0 30px #ff416c22}
-.banned .bar{background:linear-gradient(90deg,#dc2626,#ff416c)}
-.banned .btn{background:linear-gradient(100deg,#991b1b,#dc2626)}
-@media(max-width:360px){.card{padding:23px 14px}h1{font-size:17px}.brand{font-size:13px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+body:before {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.15;
+  background-image:
+    linear-gradient(#00f5ff18 1px,transparent 1px),
+    linear-gradient(90deg,#00f5ff18 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+.app {
+  max-width:740px;
+  margin:auto;
+  padding:16px;
+}
+
+.topbar,.card {
+  background:#0c1020ed;
+  border:1px solid #00f5ff35;
+  border-radius:20px;
+  box-shadow:0 10px 35px #0003;
+}
+
+.topbar {
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.brand {
+  font:900 15px Orbitron,sans-serif;
+  line-height:1.7;
+}
+
+.brand span { color:var(--cyan); }
+
+.online {
+  color:var(--green);
+  font:11px "Share Tech Mono",monospace;
+}
+
+.hero {
+  text-align:center;
+  padding:30px 5px 24px;
+}
+
+.eyebrow {
+  color:var(--cyan);
+  letter-spacing:4px;
+  font:12px "Share Tech Mono",monospace;
+}
+
+h1 {
+  font:900 clamp(26px,7vw,43px) Orbitron,sans-serif;
+  line-height:1.4;
+  margin:14px 0;
+}
+
+h1 span {
+  display:block;
+  color:var(--cyan);
+  text-shadow:0 0 25px #00f5ff35;
+}
+
+.subtitle {
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.8;
+}
+
+.card {
+  padding:20px 16px;
+  margin-top:16px;
+}
+
+.scanner {
+  position:relative;
+  width:175px;
+  height:175px;
+  margin:10px auto 24px;
+  display:grid;
+  place-items:center;
+}
+
+.ring {
+  position:absolute;
+  inset:0;
+  border:1px solid #00f5ff70;
+  border-radius:50%;
+}
+
+.ring.one {
+  border-top:3px solid var(--cyan);
+  border-bottom:3px solid var(--purple);
+  animation:spin 5s linear infinite;
+}
+
+.ring.two {
+  inset:14px;
+  border-left:3px solid var(--cyan);
+  border-right:3px solid #ff2d75;
+  animation:spin 3s linear infinite reverse;
+}
+
+.ring.three {
+  inset:29px;
+  border-style:dashed;
+  animation:spin 15s linear infinite;
+}
+
+.core {
+  width:90px;
+  height:90px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:radial-gradient(circle,#16485c,#080c1b);
+  border:1px solid #00f5ff75;
+  box-shadow:0 0 35px #00f5ff25;
+  font-size:40px;
+}
+
+.status {
+  text-align:center;
+  font:800 18px Orbitron,sans-serif;
+}
+
+.description {
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+  margin:12px 0 20px;
+}
+
+.progress {
+  height:7px;
+  background:#20273b;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.fill {
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--purple),var(--cyan));
+  transition:width .3s;
+}
+
+.progress-info {
+  display:flex;
+  justify-content:space-between;
+  margin-top:9px;
+  color:var(--muted);
+  font:11px "Share Tech Mono",monospace;
+}
+
+.btn {
+  width:100%;
+  padding:16px;
+  margin-top:16px;
+  border:0;
+  border-radius:13px;
+  background:linear-gradient(100deg,var(--cyan),#a78bfa);
+  color:#061018;
+  font:900 12px Orbitron,sans-serif;
+  cursor:pointer;
+}
+
+.btn:disabled {
+  opacity:.6;
+  cursor:wait;
+}
+
+.secondary {
+  color:#fff;
+  background:#151c30;
+  border:1px solid #34405a;
+}
+
+.title {
+  color:var(--cyan);
+  font:700 13px Orbitron,sans-serif;
+  letter-spacing:1px;
+  margin-bottom:14px;
+}
+
+.rule,.info {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #252c40;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.rule:last-child,.info:last-child {
+  border-bottom:0;
+}
+
+.yes { color:var(--green); }
+.no { color:var(--red); }
+
+.label {
+  color:var(--muted);
+  font-size:11px;
+  min-width:85px;
+}
+
+.value {
+  text-align:right;
+  overflow-wrap:anywhere;
+  font:12px "Share Tech Mono",monospace;
+}
+
+.result {
+  display:none;
+  padding:17px;
+  margin-top:18px;
+  border-radius:14px;
+  line-height:1.8;
+}
+
+.result.good {
+  display:block;
+  border:1px solid #00ff9d70;
+  background:#00ff9d0c;
+}
+
+.result.bad {
+  display:block;
+  border:1px solid #ff456470;
+  background:#ff45640c;
+}
+
+.result h2 {
+  margin:0 0 8px;
+  font:800 18px Orbitron,sans-serif;
+}
+
+.result p {
+  margin:0;
+  font-size:13px;
+  color:#c4cde0;
+}
+
+.small {
+  color:var(--muted);
+  font:11px/1.8 "Share Tech Mono",monospace;
+  overflow-wrap:anywhere;
+}
+
+pre {
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.footer {
+  text-align:center;
+  margin:25px 0;
+  color:#65708d;
+  font:10px/2 "Share Tech Mono",monospace;
+  letter-spacing:2px;
+}
+
+@keyframes spin {
+  to { transform:rotate(360deg); }
+}
+
+@media(max-width:380px) {
+  .app { padding:10px; }
+  .scanner { width:150px;height:150px; }
+  .card { padding:16px 12px; }
+}
 </style>
 </head>
+
 <body>
-<div class="card" id="card">
- <div class="top"><span>SVP / SECURITY CORE</span><span class="live">● SYSTEM ONLINE</span></div>
- <div class="brand">SUPER<span>VERIFY</span> PRO</div>
- <div class="orb"><div class="symbol" id="symbol">🛡️</div></div>
- <div class="badge" id="badge">DEVICE SECURITY CHECK</div>
- <h1 id="title">VERIFY YOUR DEVICE</h1>
- <p class="desc" id="message">Checking your device and account registration. Please wait...</p>
- <div class="progress-info" id="progressInfo"><span id="stepText">INITIALIZING</span><span id="percent">00%</span></div>
- <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
- <div class="steps" id="steps">
-  <div class="step active" id="s1"><strong>01</strong>DEVICE</div>
-  <div class="step" id="s2"><strong>02</strong>ACCOUNT</div>
-  <div class="step" id="s3"><strong>03</strong>VERIFY</div>
- </div>
+<main class="app">
 
- <div class="rules">
-  <div class="rule-title">✦ SECURITY RULES</div>
-  <div class="rule">1 Device + 1 User + 1 Bot <span class="icon">✅</span></div>
-  <div class="rule">1 Device + 2 Users + 1 Bot <span class="icon">🚫</span></div>
-  <div class="rule">1 Device + 2 Users + 2 Bots <span class="icon">✅</span></div>
-  <div class="rule">2 Devices + 2 Users + 2 Bots <span class="icon">✅</span></div>
- </div>
+<header class="topbar">
+  <div class="brand">
+    SUPER <span>VERIFY</span><br>
+    PRO MAX
+  </div>
+  <div class="online">● SYSTEM READY</div>
+</header>
 
- <div class="info" id="info"></div>
- <div class="api" id="api">
-  <div class="api-head"><span>⚡ SERVER RESPONSE</span><span id="http">WAITING</span></div>
-  <pre id="json"></pre>
- </div>
- <a href="#" class="btn" id="btn">↗ CONTINUE TO TELEGRAM</a>
- <div class="footer">SECURE ACCESS • DEVICE PROTECTION</div>
-</div>
+<section class="hero">
+  <div class="eyebrow">NEXT-GEN SECURITY SYSTEM</div>
+  <h1>ACCESS <span>VERIFICATION</span></h1>
+  <p class="subtitle">
+    Secure access control • Bot protection • Account verification
+  </p>
+</section>
+
+<section class="card">
+  <div class="scanner">
+    <div class="ring one"></div>
+    <div class="ring two"></div>
+    <div class="ring three"></div>
+    <div class="core" id="scannerIcon">⌁</div>
+  </div>
+
+  <div class="status" id="status">BOT JOIN REQUIRED</div>
+
+  <p class="description" id="description">
+    Open this page using the official verification link from your bot.
+  </p>
+
+  <div class="progress">
+    <div class="fill" id="fill"></div>
+  </div>
+
+  <div class="progress-info">
+    <span id="phase">WAITING</span>
+    <span id="percent">0%</span>
+  </div>
+
+  <button class="btn" id="joinBtn">🤖 JOIN OUR BOT</button>
+  <button class="btn" id="verifyBtn" hidden>
+    ⚡ START VERIFICATION
+  </button>
+
+  <div class="result" id="result">
+    <h2 id="resultTitle"></h2>
+    <p id="resultMessage"></p>
+  </div>
+</section>
+
+<section class="card">
+  <div class="title">✦ SECURITY RULES</div>
+
+  <div class="rule">
+    <span>1 Device + 1 User + 1 Bot</span>
+    <b class="yes">✓ ALLOW</b>
+  </div>
+
+  <div class="rule">
+    <span>1 Device + 2 Users + Same Bot</span>
+    <b class="no">× DENY</b>
+  </div>
+
+  <div class="rule">
+    <span>1 Device + 2 Users + Different Bots</span>
+    <b class="yes">✓ ALLOW</b>
+  </div>
+
+  <div class="rule">
+    <span>Same User + Same Device + Same Bot</span>
+    <b class="yes">✓ ALLOW</b>
+  </div>
+</section>
+
+<section class="card">
+  <div class="title">▣ VERIFICATION DETAILS</div>
+
+  <div class="info">
+    <span class="label">BOT NAME</span>
+    <span class="value" id="botName">Not authenticated</span>
+  </div>
+
+  <div class="info">
+    <span class="label">USER ID</span>
+    <span class="value" id="userId">Hidden</span>
+  </div>
+
+  <div class="info">
+    <span class="label">BOT ID</span>
+    <span class="value" id="botId">Hidden</span>
+  </div>
+
+  <div class="info">
+    <span class="label">ACCESS</span>
+    <span class="value" id="access">PENDING</span>
+  </div>
+</section>
+
+<section class="card">
+  <div class="title">◈ API STATUS</div>
+  <pre class="small" id="apiResponse">Waiting for authorized request.</pre>
+  <p class="small">
+    API secrets and internal account records must never be exposed
+    to unauthenticated visitors.
+  </p>
+</section>
+
+<footer class="footer">
+  SUPER VERIFY PRO MAX<br>
+  SECURE • BOT-SCOPED • SERVER-VALIDATED
+</footer>
+
+</main>
 
 <script>
-const $=id=>document.getElementById(id);
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+/*
+  CONFIGURATION
 
-function fingerprint(){
- const raw=[navigator.userAgent,screen.width+"x"+screen.height,
- screen.colorDepth,new Date().getTimezoneOffset(),
- navigator.hardwareConcurrency||4].join("|");
- let h=0;
- for(let i=0;i<raw.length;i++){h=((h<<5)-h)+raw.charCodeAt(i);h|=0}
- return "DEV-"+(h>>>0).toString(16).toUpperCase();
+  Replace these with your actual public URLs.
+  Never put private API keys or Telegram bot tokens here.
+
+  Your backend must issue short-lived, one-time verification tokens.
+*/
+
+const API_BASE =
+  "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+
+const JOIN_BOT_URL =
+  "https://t.me/YOUR_BOT_USERNAME";
+
+const params = new URLSearchParams(location.search);
+const token = params.get("token");
+
+const $ = id => document.getElementById(id);
+
+$("joinBtn").onclick = () => {
+  location.href = JOIN_BOT_URL;
+};
+
+function setProgress(value, label) {
+  $("fill").style.width = value + "%";
+  $("percent").textContent = value + "%";
+  $("phase").textContent = label;
 }
-function safe(v){
- return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function showResult(success, title, message) {
+  $("result").className =
+    "result " + (success ? "good" : "bad");
+
+  $("resultTitle").textContent = title;
+  $("resultMessage").textContent = message;
+  $("result").style.display = "block";
+
+  $("scannerIcon").textContent = success ? "✓" : "×";
+  $("status").textContent =
+    success ? "ACCESS GRANTED" : "ACCESS DENIED";
+
+  $("status").style.color =
+    success ? "var(--green)" : "var(--red)";
+
+  $("access").textContent =
+    success ? "VERIFIED" : "DENIED";
 }
-function progress(n,label,active){
- $("bar").style.width=n+"%";
- $("percent").textContent=String(n).padStart(2,"0")+"%";
- $("stepText").textContent=label;
- ["s1","s2","s3"].forEach((id,i)=>$(id).className="step "+(i+1<active?"done":i+1===active?"active":""));
-}
-function fail(title,message){
- $("card").className="card banned";
- $("badge").textContent="VERIFICATION ERROR";
- $("symbol").textContent="⚠️";
- $("title").textContent=title;
- $("message").textContent=message;
- $("progress").style.display="none";
- $("progressInfo").style.display="none";
- $("steps").style.display="none";
-}
-async function start(){
- const params=new URLSearchParams(location.search);
- const userid=params.get("userid");
- const bot=(params.get("bot")||"MyTelegramBot").replace(/^@/,"");
 
- if(!userid||!/^\d+$/.test(userid)||!/^[a-zA-Z0-9_]{5,32}$/.test(bot)){
-  fail("INVALID VERIFICATION LINK","Please open a valid verification link from your Telegram bot.");
-  return;
- }
-
- const deviceId=fingerprint();
- progress(20,"DEVICE CHECK",1);
- await sleep(350);
- $("message").textContent="Checking account registration for this bot...";
- progress(50,"ACCOUNT CHECK",2);
- await sleep(350);
- $("message").textContent="Contacting the verification server...";
- progress(75,"SERVER VERIFY",3);
-
- try{
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),10000);
-  let res;
-  try{
-   res=await fetch("/api/verify",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    signal:controller.signal,
-    body:JSON.stringify({userid,bot,deviceId})
-   });
-  }finally{clearTimeout(timer)}
-
-  let data;
-  try{data=await res.json()}catch{throw new Error("Invalid server response")}
-
-  $("progress").style.display="none";
-  $("progressInfo").style.display="none";
-  $("steps").style.display="none";
-  $("api").style.display="block";
-  $("json").textContent=JSON.stringify(data,null,2);
-  $("http").textContent="HTTP "+res.status;
-
-  const denied=!res.ok||data.status==="banned";
-
-  if(denied){
-   $("card").className="card banned";
-   $("badge").textContent="✖ ACCESS DENIED";
-   $("symbol").textContent="🚫";
-   $("title").textContent="ACCESS RESTRICTED";
-   $("message").textContent=data.message||"Access denied by the verification server.";
-   $("btn").textContent="↗ RETURN TO @"+bot;
-  }else if(data.status==="verified"||data.status==="success"){
-   $("card").className="card verified";
-   $("badge").textContent="✔ ACCESS GRANTED";
-   $("symbol").textContent="✓";
-   $("title").textContent="VERIFICATION SUCCESSFUL";
-   $("message").textContent="Your verification has been accepted by the server.";
-   $("btn").textContent="✦ CONTINUE TO @"+bot;
-  }else{
-   fail("VERIFICATION PENDING","The server has not confirmed verification. Please try again.");
-   $("api").style.display="block";
-   $("json").textContent=JSON.stringify(data,null,2);
-   $("http").textContent="HTTP "+res.status;
-   return;
+async function verifyAccess() {
+  if (!token) {
+    showResult(
+      false,
+      "BOT LINK REQUIRED",
+      "Open the official verification link sent by your bot."
+    );
+    return;
   }
 
-  const rows=[
-   ["BOT NAME","@"+bot],
-   ["USER ID",userid],
-   ["DEVICE ID",deviceId],
-   ["RESULT",denied?"ACCESS DENIED":"VERIFIED"]
-  ];
-  $("info").style.display="block";
-  $("info").innerHTML=rows.map(([a,b])=>'<div class="row"><span class="label">'+safe(a)+'</span><span class="value">'+safe(b)+'</span></div>').join("");
-  $("btn").href="https://t.me/"+bot;
-  $("btn").style.display="block";
+  if (API_BASE.includes("YOUR-WORKER-NAME")) {
+    showResult(
+      false,
+      "API NOT CONFIGURED",
+      "Configure your backend URL before starting verification."
+    );
+    return;
+  }
 
- }catch(e){
-  fail("SERVER CONNECTION ERROR",e.name==="AbortError"?"The server timed out. Please try again.":"Unable to connect to the verification server.");
- }
+  $("verifyBtn").disabled = true;
+  $("joinBtn").hidden = true;
+
+  $("description").textContent =
+    "Checking your authorization token with the secure server...";
+
+  setProgress(25, "TOKEN CHECK");
+
+  try {
+    const response = await fetch(
+      API_BASE + "/api/verify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token })
+      }
+    );
+
+    setProgress(75, "SERVER CHECK");
+
+    const data = await response.json();
+
+    // Only display safe, limited response fields.
+    $("apiResponse").textContent = JSON.stringify({
+      status: data.status || "error",
+      code: data.code || "UNKNOWN",
+      message: data.message || "No details"
+    }, null, 2);
+
+    if (data.bot_name) {
+      $("botName").textContent = data.bot_name;
+    }
+
+    if (data.user_id) {
+      $("userId").textContent = data.user_id;
+    }
+
+    if (data.bot_id) {
+      $("botId").textContent = data.bot_id;
+    }
+
+    setProgress(100, "COMPLETE");
+
+    if (response.ok && data.status === "verified") {
+      showResult(
+        true,
+        "VERIFICATION SUCCESSFUL",
+        "The server has authorized this bot session."
+      );
+
+      $("description").textContent =
+        "Your verification was confirmed by the server.";
+    } else {
+      showResult(
+        false,
+        "VERIFICATION FAILED",
+        data.message || "The token is invalid, expired, or access was denied."
+      );
+    }
+  } catch (error) {
+    setProgress(0, "CONNECTION ERROR");
+
+    showResult(
+      false,
+      "SERVER UNAVAILABLE",
+      "Check your backend URL and server deployment."
+    );
+
+    $("apiResponse").textContent =
+      "Could not reach the verification server.";
+  } finally {
+    $("verifyBtn").disabled = false;
+  }
 }
-start();
+
+if (token) {
+  $("status").textContent = "AUTHORIZATION TOKEN FOUND";
+
+  $("description").textContent =
+    "A verification token was supplied. Continue to check it with the server.";
+
+  $("joinBtn").hidden = true;
+  $("verifyBtn").hidden = false;
+  $("verifyBtn").onclick = verifyAccess;
+} else {
+  $("status").textContent = "BOT JOIN REQUIRED";
+
+  $("description").textContent =
+    "No verification token found. Join the bot and open its official verification link.";
+
+  $("joinBtn").hidden = false;
+  $("verifyBtn").hidden = true;
+
+  setProgress(0, "WAITING FOR BOT LINK");
+}
 </script>
 </body>
 </html>
