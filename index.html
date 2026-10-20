@@ -1,344 +1,471 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security Device Verification</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Security Verification</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top, #1e1b4b, #090d16 70%);
-      color: #ffffff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow-x: hidden;
-    }
+*{box-sizing:border-box;margin:0;padding:0}
 
-    .card {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 32px 24px;
-      border-radius: 24px;
-      width: 100%;
-      max-width: 430px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-      transition: all 0.4s ease;
-      position: relative;
-    }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  font-family:'Poppins',sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(ellipse at 50% 0%,#172554 0%,transparent 55%),
+    #030712;
+  overflow-x:hidden;
+}
 
-    /* Glow Themes */
-    .card.scanning { border-color: #38bdf8; box-shadow: 0 0 35px rgba(56, 189, 248, 0.25); }
-    .card.verified { border-color: #22c55e; box-shadow: 0 0 40px rgba(34, 197, 94, 0.35); }
-    .card.banned { 
-      border-color: #ef4444; 
-      box-shadow: 0 0 45px rgba(239, 68, 68, 0.45); 
-      animation: shake 0.5s ease-in-out;
-    }
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.17;
+  background-image:
+    linear-gradient(#38bdf8 1px,transparent 1px),
+    linear-gradient(90deg,#38bdf8 1px,transparent 1px);
+  background-size:35px 35px;
+  mask-image:linear-gradient(to bottom,#000,transparent 85%);
+}
 
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
-    }
+.card{
+  width:100%;
+  max-width:430px;
+  padding:30px 23px;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(15,23,42,.96),rgba(3,7,18,.98));
+  border:1px solid rgba(56,189,248,.35);
+  box-shadow:0 0 35px #0ea5e91c,0 25px 70px #0009;
+  transition:.4s;
+}
 
-    /* Pulse Scanner Icon */
-    .icon-wrapper {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 44px;
-      position: relative;
-      background: rgba(56, 189, 248, 0.1);
-      border: 2px solid #38bdf8;
-    }
-    .scanning .icon-wrapper { animation: pulseBlue 1.5s infinite; }
-    .verified .icon-wrapper { background: rgba(34, 197, 94, 0.15); border-color: #22c55e; box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
-    .banned .icon-wrapper { background: rgba(239, 68, 68, 0.15); border-color: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.5); }
+.card:before{
+  content:"";
+  position:absolute;
+  height:2px;
+  top:0;left:10%;right:10%;
+  background:linear-gradient(90deg,transparent,#38bdf8,#a78bfa,transparent);
+  box-shadow:0 0 20px #38bdf8;
+}
 
-    @keyframes pulseBlue {
-      0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.6); }
-      70% { box-shadow: 0 0 0 20px rgba(56, 189, 248, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
-    }
+.card.scanning{animation:cardGlow 2s infinite alternate}
+.card.verified{
+  border-color:#22c55e;
+  box-shadow:0 0 35px #22c55e30;
+}
+.card.banned{
+  border-color:#ef4444;
+  box-shadow:0 0 35px #ef444430;
+  animation:shake .4s;
+}
 
-    .badge {
-      display: inline-block;
-      padding: 4px 14px;
-      border-radius: 50px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      background: rgba(56, 189, 248, 0.2);
-      color: #38bdf8;
-    }
-    .verified .badge { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-    .banned .badge { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+@keyframes cardGlow{
+  from{box-shadow:0 0 15px #38bdf822}
+  to{box-shadow:0 0 35px #38bdf844}
+}
+@keyframes shake{
+  25%{transform:translateX(-5px)}
+  75%{transform:translateX(5px)}
+}
 
-    h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-    p { font-size: 13.5px; color: #94a3b8; line-height: 1.5; margin-bottom: 18px; }
+.badge{
+  display:inline-block;
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  color:#7dd3fc;
+  padding:9px 14px;
+  border:1px solid #38bdf84d;
+  background:#0ea5e918;
+  border-radius:30px;
+  margin-bottom:23px;
+}
+.verified .badge{color:#4ade80;border-color:#22c55e66;background:#22c55e12}
+.banned .badge{color:#f87171;border-color:#ef444466;background:#ef444412}
 
-    /* Progress Bar */
-    .progress-box {
-      width: 100%;
-      height: 6px;
-      background: #1e293b;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 18px;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #38bdf8, #818cf8);
-      transition: width 0.4s ease;
-    }
+.icon-wrapper{
+  width:105px;height:105px;
+  margin:0 auto 23px;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:46px;
+  background:radial-gradient(circle,#0c4a6e66,transparent 70%);
+  border:2px solid #38bdf8;
+  box-shadow:0 0 25px #38bdf833,inset 0 0 20px #38bdf811;
+  position:relative;
+}
 
-    /* Info Grid */
-    .info-grid {
-      background: rgba(2, 6, 23, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 14px;
-      text-align: left;
-      font-size: 12.5px;
-      margin-bottom: 16px;
-      display: none;
-    }
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-    }
-    .info-row:last-child { border-bottom: none; }
-    .info-label { color: #64748b; }
-    .info-val { font-weight: 600; color: #e2e8f0; font-family: 'JetBrains Mono', monospace; }
+.icon-wrapper:before,
+.icon-wrapper:after{
+  content:"";
+  position:absolute;
+  inset:-9px;
+  border:1px dashed #38bdf877;
+  border-radius:50%;
+  animation:rotate 9s linear infinite;
+}
+.icon-wrapper:after{
+  inset:-16px;
+  border-color:#818cf855;
+  animation-direction:reverse;
+  animation-duration:14s;
+}
+@keyframes rotate{to{transform:rotate(360deg)}}
 
-    /* Live API JSON Viewer Box */
-    .api-box {
-      text-align: left;
-      background: #050811;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 18px;
-      display: none;
-    }
-    .api-header {
-      font-size: 11px;
-      color: #38bdf8;
-      font-weight: 600;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-    }
-    pre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: #a5f3fc;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
+.scanning .icon-wrapper{
+  animation:pulse 1.6s infinite;
+}
+@keyframes pulse{
+  50%{box-shadow:0 0 35px #38bdf866,inset 0 0 25px #38bdf822}
+}
+.verified .icon-wrapper{
+  border-color:#22c55e;
+  box-shadow:0 0 30px #22c55e55;
+}
+.verified .icon-wrapper:before{border-color:#4ade8077}
+.banned .icon-wrapper{
+  border-color:#ef4444;
+  box-shadow:0 0 30px #ef444455;
+}
+.banned .icon-wrapper:before{border-color:#ef444477}
 
-    /* Button */
-    .btn {
-      display: none;
-      width: 100%;
-      padding: 13px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      color: #fff;
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
-      transition: transform 0.2s;
-    }
-    .btn:active { transform: scale(0.97); }
-    .btn.banned-btn {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
-      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
-    }
-  </style>
+h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:12px;
+  line-height:1.5;
+  text-shadow:0 0 15px #38bdf833;
+}
+p{
+  font-size:12px;
+  color:#94a3b8;
+  line-height:1.8;
+  margin-bottom:23px;
+}
+
+.progress-box{
+  height:7px;
+  border-radius:20px;
+  background:#1e293b;
+  overflow:hidden;
+  margin-bottom:12px;
+  border:1px solid #334155;
+}
+.progress-bar{
+  height:100%;
+  width:0%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#06b6d4,#818cf8,#c084fc);
+  box-shadow:0 0 15px #38bdf8;
+  transition:width .4s ease;
+}
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  color:#64748b;
+  font-family:'Orbitron',sans-serif;
+  margin-bottom:22px;
+}
+
+.info-grid{
+  display:none;
+  text-align:left;
+  background:#020617aa;
+  border:1px solid #334155;
+  border-radius:15px;
+  padding:14px;
+  margin-bottom:17px;
+  font-size:11px;
+}
+.info-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px dashed #334155;
+}
+.info-row:last-child{border-bottom:0}
+.info-label{color:#64748b}
+.info-val{
+  text-align:right;
+  overflow-wrap:anywhere;
+  color:#e2e8f0;
+  font-family:monospace;
+  font-weight:600;
+}
+.api-box{
+  display:none;
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:12px;
+  padding:13px;
+  text-align:left;
+  margin-bottom:18px;
+}
+.api-header{
+  color:#38bdf8;
+  font-size:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:10px;
+}
+pre{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font:11px/1.7 monospace;
+  color:#a5f3fc;
+  max-height:180px;
+  overflow:auto;
+}
+.btn{
+  display:none;
+  width:100%;
+  text-decoration:none;
+  color:white;
+  padding:15px 12px;
+  border-radius:13px;
+  background:linear-gradient(110deg,#0284c7,#4f46e5);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.5px;
+  box-shadow:0 6px 25px #2563eb44;
+  transition:.2s;
+}
+.btn:active{transform:scale(.97)}
+.btn.banned-btn{
+  background:linear-gradient(110deg,#dc2626,#991b1b);
+}
+.footer{
+  margin-top:22px;
+  padding-top:15px;
+  border-top:1px solid #1e293b;
+  color:#475569;
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+.verified .progress-bar{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.banned .progress-bar{background:linear-gradient(90deg,#dc2626,#fb7185)}
+
+@media(max-width:380px){
+  .card{padding:25px 17px}
+  h2{font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}
+</style>
 </head>
 <body>
 
-  <div id="card" class="card scanning">
-    <div id="badge" class="badge">SECURITY SCANNER</div>
-    <div class="icon-wrapper" id="icon">🛡️</div>
-    <h2 id="title">Scanning Device...</h2>
-    <p id="message">Checking hardware fingerprint & multi-account protection...</p>
+<div id="card" class="card scanning">
+  <div id="badge" class="badge">✦ SECURITY SYSTEM ✦</div>
+  <div id="icon" class="icon-wrapper">🛡️</div>
 
-    <div class="progress-box" id="progressBox">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
+  <h2 id="title">DEVICE VERIFICATION</h2>
+  <p id="message">Initializing security protocols...<br>Please wait while verification is in progress.</p>
 
-    <div class="info-grid" id="infoGrid"></div>
-
-    <div class="api-box" id="apiBox">
-      <div class="api-header">
-        <span>⚡ LIVE API RESPONSE</span>
-        <span id="httpCode">HTTP 200</span>
-      </div>
-      <pre id="apiJson"></pre>
-    </div>
-
-    <a href="#" id="botBtn" class="btn">🚀 Return to Telegram Bot</a>
+  <div class="progress-box" id="progressBox">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">
+    <span id="stepText">INITIALIZING</span>
+    <span id="percentText">0%</span>
   </div>
 
-  <script>
-    function generateFingerprint() {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      ctx.textBaseline = 'top';
-      ctx.font = '14px Arial';
-      ctx.fillText('SuperVerify_FP', 2, 2);
-      const raw = [
-        navigator.userAgent,
-        screen.width + 'x' + screen.height,
-        screen.colorDepth,
-        new Date().getTimezoneOffset(),
-        navigator.hardwareConcurrency || '4',
-        canvas.toDataURL()
-      ].join('|');
+  <div class="info-grid" id="infoGrid"></div>
 
-      let hash = 0;
-      for (let i = 0; i < raw.length; i++) {
-        hash = ((hash << 5) - hash) + raw.charCodeAt(i);
-        hash |= 0;
-      }
-      return 'DEV-' + Math.abs(hash).toString(16).toUpperCase();
+  <div class="api-box" id="apiBox">
+    <div class="api-header">
+      <span>⚡ API RESPONSE</span>
+      <span id="httpCode">WAITING</span>
+    </div>
+    <pre id="apiJson"></pre>
+  </div>
+
+  <a href="#" id="botBtn" class="btn">↗ RETURN TO TELEGRAM</a>
+
+  <div class="footer">SECURE ACCESS • DEVICE CHECK</div>
+</div>
+
+<script>
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+function generateFingerprint(){
+  const raw = [
+    navigator.userAgent,
+    screen.width + "x" + screen.height,
+    screen.colorDepth,
+    new Date().getTimezoneOffset(),
+    navigator.hardwareConcurrency || 4
+  ].join("|");
+
+  let hash = 0;
+  for(let i=0;i<raw.length;i++){
+    hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+    hash |= 0;
+  }
+  return "DEV-" + (hash >>> 0).toString(16).toUpperCase();
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  })[char]);
+}
+
+async function startVerification(){
+  const $ = id => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  const userId = params.get("userid");
+  const botName = (params.get("bot") || "MyTelegramBot").replace(/^@/,"");
+
+  const card = $("card");
+  const pBar = $("progressBar");
+
+  function progress(value,label){
+    pBar.style.width = value + "%";
+    $("percentText").textContent = value + "%";
+    $("stepText").textContent = label;
+  }
+
+  function showError(title,message){
+    card.className = "card banned";
+    $("badge").textContent = "⚠ VERIFICATION ERROR";
+    $("icon").textContent = "⚠️";
+    $("title").textContent = title;
+    $("message").textContent = message;
+    $("progressBox").style.display = "none";
+    $("progressLabel").style.display = "none";
+  }
+
+  if(!userId || !/^\d+$/.test(userId) ||
+     !/^[a-zA-Z0-9_]{5,32}$/.test(botName)){
+    showError("INVALID VERIFICATION LINK",
+      "Please open a valid verification link from your Telegram bot.");
+    return;
+  }
+
+  progress(20,"INITIALIZING");
+  await sleep(350);
+
+  $("message").textContent = "Preparing device verification...";
+  progress(45,"DEVICE CHECK");
+  await sleep(350);
+
+  $("message").textContent = "Connecting to the security server...";
+  progress(70,"SERVER CHECK");
+  await sleep(350);
+
+  const deviceId = generateFingerprint();
+
+  try{
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(),10000);
+
+    let res;
+    try{
+      res = await fetch("/api/verify",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        signal:controller.signal,
+        body:JSON.stringify({
+          userid:userId,
+          bot:botName,
+          deviceId:deviceId
+        })
+      });
+    }finally{
+      clearTimeout(timeout);
     }
 
-    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
-    async function startVerification() {
-      const params = new URLSearchParams(window.location.search);
-      const userId = params.get('userid');
-      const botName = (params.get('bot') || 'MyTelegramBot').replace('@', '');
-
-      const card = document.getElementById('card');
-      const badge = document.getElementById('badge');
-      const icon = document.getElementById('icon');
-      const title = document.getElementById('title');
-      const msg = document.getElementById('message');
-      const pBar = document.getElementById('progressBar');
-      const pBox = document.getElementById('progressBox');
-      const infoGrid = document.getElementById('infoGrid');
-      const apiBox = document.getElementById('apiBox');
-      const apiJson = document.getElementById('apiJson');
-      const httpCode = document.getElementById('httpCode');
-      const botBtn = document.getElementById('botBtn');
-
-      if (!userId) {
-        card.className = 'card banned';
-        badge.innerText = 'INVALID LINK';
-        icon.innerText = '⚠️';
-        title.innerText = 'Missing User ID!';
-        msg.innerText = 'Please open this link directly from the Telegram Bot.';
-        pBox.style.display = 'none';
-        return;
-      }
-
-      // Stylish Scanning Steps
-      pBar.style.width = '35%';
-      await sleep(500);
-      msg.innerText = 'Generating Hardware Device ID...';
-      pBar.style.width = '70%';
-      await sleep(600);
-      msg.innerText = 'Verifying Account with @' + botName + '...';
-      pBar.style.width = '100%';
-      await sleep(500);
-
-      let deviceId = localStorage.getItem('permanent_dev_id');
-      if (!deviceId) {
-        deviceId = generateFingerprint();
-        localStorage.setItem('permanent_dev_id', deviceId);
-      }
-
-      const storageKey = `locked_user_${botName.toLowerCase()}`;
-      const previousUser = localStorage.getItem(storageKey);
-
-      try {
-        const res = await fetch('/api/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userid: userId,
-            bot: botName,
-            deviceId: deviceId,
-            previousUser: previousUser
-          })
-        });
-
-        const data = await res.json();
-        pBox.style.display = 'none';
-        infoGrid.style.display = 'block';
-        apiBox.style.display = 'block';
-        botBtn.style.display = 'block';
-        botBtn.href = `https://t.me/${botName}`;
-
-        // Show Live API JSON on Screen
-        apiJson.innerText = JSON.stringify(data, null, 2);
-
-        if (data.status === 'banned') {
-          card.className = 'card banned';
-          badge.innerText = 'ACCESS DENIED 🚫';
-          icon.innerText = '🚫';
-          title.innerText = 'Device Banned!';
-          msg.innerText = 'Multiple accounts detected on the same device for this bot!';
-          httpCode.innerText = 'HTTP 403 BANNED';
-          httpCode.style.color = '#f87171';
-          botBtn.className = 'btn banned-btn';
-          botBtn.innerText = '🚫 Account Blocked on @' + botName;
-
-          infoGrid.innerHTML = `
-            <div class="info-row"><span class="info-label">Bot Name</span><span class="info-val">@${botName}</span></div>
-            <div class="info-row"><span class="info-label">1st User ID</span><span class="info-val">${data.first_userid}</span></div>
-            <div class="info-row"><span class="info-label">2nd User ID</span><span class="info-val" style="color:#f87171">${userId}</span></div>
-            <div class="info-row"><span class="info-label">Device ID</span><span class="info-val">${deviceId}</span></div>
-            <div class="info-row"><span class="info-label">Result</span><span class="info-val" style="color:#f87171">DIRECT BANNED 🚫</span></div>
-          `;
-        } else {
-          localStorage.setItem(storageKey, userId);
-          card.className = 'card verified';
-          badge.innerText = 'ACCESS GRANTED ✅';
-          icon.innerText = '✅';
-          title.innerText = 'Successfully Verified!';
-          msg.innerText = 'Your device is clean & verified. You can now use the bot.';
-          httpCode.innerText = 'HTTP 200 OK';
-          httpCode.style.color = '#4ade80';
-          botBtn.innerText = '🚀 Continue to @' + botName;
-
-          infoGrid.innerHTML = `
-            <div class="info-row"><span class="info-label">Bot Name</span><span class="info-val">@${botName}</span></div>
-            <div class="info-row"><span class="info-label">User ID</span><span class="info-val">${userId}</span></div>
-            <div class="info-row"><span class="info-label">Device ID</span><span class="info-val">${deviceId}</span></div>
-            <div class="info-row"><span class="info-label">Result</span><span class="info-val" style="color:#4ade80">VERIFIED ✅</span></div>
-          `;
-        }
-      } catch (e) {
-        title.innerText = 'API Error!';
-        msg.innerText = 'Could not connect to server.';
-      }
+    let data;
+    try{
+      data = await res.json();
+    }catch{
+      throw new Error("Invalid server response.");
     }
 
-    startVerification();
-  </script>
+    $("progressBox").style.display = "none";
+    $("progressLabel").style.display = "none";
+    $("infoGrid").style.display = "block";
+    $("apiBox").style.display = "block";
+    $("apiJson").textContent = JSON.stringify(data,null,2);
+    $("httpCode").textContent = "HTTP " + res.status;
+    $("botBtn").style.display = "block";
+    $("botBtn").href = "https://t.me/" + botName;
+
+    const banned = !res.ok || data.status === "banned";
+
+    if(banned){
+      card.className = "card banned";
+      $("badge").textContent = "✖ ACCESS DENIED";
+      $("icon").textContent = "🚫";
+      $("title").textContent = "VERIFICATION FAILED";
+      $("message").textContent =
+        data.message || "Access was denied by the verification server.";
+      $("httpCode").style.color = "#f87171";
+      $("botBtn").className = "btn banned-btn";
+      $("botBtn").textContent = "↗ RETURN TO @" + botName;
+    }else if(data.status === "verified" || data.status === "success"){
+      card.className = "card verified";
+      $("badge").textContent = "✔ ACCESS GRANTED";
+      $("icon").textContent = "✅";
+      $("title").textContent = "VERIFICATION SUCCESSFUL";
+      $("message").textContent =
+        "Your verification has been accepted by the server.";
+      $("httpCode").style.color = "#4ade80";
+      $("botBtn").textContent = "🚀 CONTINUE TO @" + botName;
+    }else{
+      showError("VERIFICATION PENDING",
+        "The server did not confirm verification. Please try again.");
+      $("apiBox").style.display = "block";
+      $("apiJson").textContent = JSON.stringify(data,null,2);
+      $("httpCode").textContent = "HTTP " + res.status;
+      return;
+    }
+
+    const rows = [
+      ["BOT NAME","@" + botName],
+      ["USER ID",userId],
+      ["DEVICE ID",deviceId],
+      ["RESULT",banned ? "ACCESS DENIED" : "VERIFIED"]
+    ];
+
+    $("infoGrid").innerHTML = rows.map(([label,value]) =>
+      '<div class="info-row"><span class="info-label">' +
+      escapeHTML(label) + '</span><span class="info-val">' +
+      escapeHTML(value) + '</span></div>'
+    ).join("");
+
+  }catch(error){
+    showError("SERVER CONNECTION ERROR",
+      error.name === "AbortError"
+      ? "The verification server timed out. Please try again."
+      : "Could not verify your request. Please check the server and try again.");
+  }
+}
+
+startVerification();
+</script>
 </body>
 </html>
