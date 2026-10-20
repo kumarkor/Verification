@@ -2,579 +2,216 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SUPER VERIFY PRO</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-
-:root{
-  --cyan:#00f5ff;
-  --purple:#a855f7;
-  --green:#00ff9d;
-  --red:#ff3864;
-  --bg:#050611;
-}
-
+:root{--cyan:#00eaff;--purple:#985cff;--green:#00ffa3;--red:#ff416c}
 body{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  overflow-x:hidden;
-  color:#fff;
-  font-family:'Rajdhani',sans-serif;
-  background:
-    radial-gradient(ellipse at 15% 15%,#251052 0%,transparent 40%),
-    radial-gradient(ellipse at 85% 85%,#062c43 0%,transparent 40%),
-    var(--bg);
+ min-height:100vh;display:flex;align-items:center;justify-content:center;
+ padding:18px;background:#050611;color:#fff;font-family:Rajdhani,sans-serif;
+ background-image:radial-gradient(ellipse at 20% 0%,#24104c,transparent 45%),radial-gradient(ellipse at 100% 100%,#062c42,transparent 45%);
 }
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background-image:
-    linear-gradient(#00f5ff09 1px,transparent 1px),
-    linear-gradient(90deg,#00f5ff09 1px,transparent 1px);
-  background-size:30px 30px;
-  mask-image:linear-gradient(to bottom,#000,transparent);
-}
-
 .card{
-  position:relative;
-  width:100%;
-  max-width:430px;
-  padding:28px 23px 22px;
-  text-align:center;
-  overflow:hidden;
-  background:linear-gradient(145deg,#101326f5,#090b18fa);
-  border:1px solid #34345b;
-  border-radius:25px;
-  box-shadow:0 25px 80px #0009,0 0 35px #6d28d91c;
-  transition:.4s;
+ position:relative;width:100%;max-width:430px;padding:27px 21px 22px;
+ overflow:hidden;text-align:center;border-radius:24px;
+ background:linear-gradient(145deg,#111629f5,#080b16fa);
+ border:1px solid #00eaff44;box-shadow:0 25px 80px #0009,0 0 35px #00eaff12;
 }
-
-.card:before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:12%;
-  right:12%;
-  height:2px;
-  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);
-  box-shadow:0 0 20px var(--cyan);
-}
-
-.topline{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font:9px 'Orbitron',sans-serif;
-  color:#7e86a9;
-  letter-spacing:1px;
-  margin-bottom:26px;
-}
-
-.live{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  color:var(--green);
-}
-
-.dot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 10px var(--green);
-  animation:blink 1.2s infinite;
-}
-
-@keyframes blink{50%{opacity:.3}}
-
-.brand{
-  font:800 13px 'Orbitron',sans-serif;
-  letter-spacing:3px;
-  color:#fff;
-  margin-bottom:24px;
-}
-
-.brand span{
-  color:var(--cyan);
-  text-shadow:0 0 16px #00f5ff77;
-}
-
-.scanner{
-  width:124px;
-  height:124px;
-  margin:0 auto 24px;
-  border-radius:50%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-  background:radial-gradient(circle,#19264b 0%,#0b1024 65%,#080b17);
-  border:1px solid #00f5ff88;
-  box-shadow:0 0 35px #00f5ff18,inset 0 0 25px #00f5ff15;
-}
-
-.scanner:before,.scanner:after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  border:1px dashed #00f5ff77;
-  inset:-9px;
-  animation:spin 12s linear infinite;
-}
-
-.scanner:after{
-  inset:-17px;
-  border-color:#a855f755;
-  animation-direction:reverse;
-  animation-duration:18s;
-}
-
-.scanline{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:50%;
-  border-radius:120px 120px 0 0;
-  background:linear-gradient(to bottom,#00f5ff0a,#00f5ff20);
-  border-bottom:1px solid #00f5ff99;
-  transform-origin:bottom;
-  animation:scan 3s linear infinite;
-}
-
-.shield{
-  font-size:48px;
-  position:relative;
-  z-index:2;
-  filter:drop-shadow(0 0 12px #00f5ff66);
-}
-
+.card:before{content:"";position:absolute;top:0;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent)}
+.top{display:flex;justify-content:space-between;font:9px Orbitron,sans-serif;letter-spacing:1px;color:#8994b5;margin-bottom:25px}
+.live{color:var(--green)}
+.brand{font:800 15px Orbitron,sans-serif;letter-spacing:2px;margin-bottom:24px}
+.brand span{color:var(--cyan);text-shadow:0 0 16px #00eaff88}
+.orb{width:112px;height:112px;margin:0 auto 24px;border:1px solid #00eaff99;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle,#17304c,#090d1d 70%);box-shadow:0 0 30px #00eaff22,inset 0 0 22px #00eaff18}
+.orb:before,.orb:after{content:"";position:absolute;inset:-9px;border:1px dashed #00eaff88;border-radius:50%;animation:spin 12s linear infinite}
+.orb:after{inset:-16px;border-color:#985cff66;animation-direction:reverse;animation-duration:18s}
+.symbol{font-size:45px;z-index:1;filter:drop-shadow(0 0 10px #00eaff66)}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes scan{to{transform:rotate(360deg)}}
-
-.tag{
-  display:inline-block;
-  font:700 9px 'Orbitron',sans-serif;
-  letter-spacing:2px;
-  color:var(--cyan);
-  border:1px solid #00f5ff44;
-  border-radius:5px;
-  padding:8px 12px;
-  background:#00f5ff0a;
-  margin-bottom:15px;
-}
-
-h1{
-  font:800 21px 'Orbitron',sans-serif;
-  line-height:1.5;
-  margin-bottom:12px;
-  letter-spacing:.3px;
-}
-
-.description{
-  color:#9299b6;
-  font-size:15px;
-  line-height:1.55;
-  min-height:46px;
-  margin-bottom:23px;
-}
-
-.progress-info{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font:9px 'Orbitron',sans-serif;
-  color:#8188a8;
-  margin-bottom:9px;
-}
-
-.progress{
-  height:7px;
-  background:#1b2035;
-  border-radius:10px;
-  overflow:hidden;
-  border:1px solid #292e49;
-  margin-bottom:22px;
-}
-
-.bar{
-  width:0;
-  height:100%;
-  border-radius:10px;
-  background:linear-gradient(90deg,#00c8ff,#7866ff,#d16aff);
-  box-shadow:0 0 14px #00d9ff99;
-  transition:width .5s;
-}
-
-.steps{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-bottom:22px;
-}
-
-.step{
-  padding:11px 3px;
-  border:1px solid #252a42;
-  border-radius:10px;
-  background:#0b0e1b;
-  color:#606986;
-  font-size:11px;
-  font-weight:700;
-}
-
-.step .num{
-  display:block;
-  font:10px 'Orbitron',sans-serif;
-  margin-bottom:5px;
-}
-
-.step.active{
-  border-color:#00d9ff66;
-  color:#80f4ff;
-  background:#00d9ff0b;
-}
-
-.step.done{
-  border-color:#00ff9d44;
-  color:#00ff9d;
-}
-
-.info,.api{
-  display:none;
-  text-align:left;
-  background:#080b17;
-  border:1px solid #272d47;
-  border-radius:13px;
-  padding:13px;
-  margin-bottom:15px;
-}
-
-.section-title{
-  color:var(--cyan);
-  font:700 10px 'Orbitron',sans-serif;
-  letter-spacing:1px;
-  margin-bottom:8px;
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-  padding:10px 0;
-  border-bottom:1px solid #1c2236;
-}
-
-.row:last-child{border-bottom:0}
-.label{font-size:12px;color:#7d86a3}
-.value{
-  font:600 11px monospace;
-  color:#e0e7ff;
-  text-align:right;
-  overflow-wrap:anywhere;
-}
-
-.api-head{
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  font-size:10px;
-  color:var(--cyan);
-  margin-bottom:10px;
-}
-
-pre{
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  max-height:180px;
-  overflow:auto;
-  color:#9af9ff;
-  font:11px/1.7 monospace;
-}
-
-.btn{
-  display:none;
-  text-decoration:none;
-  color:#fff;
-  background:linear-gradient(100deg,#075985,#4338ca,#7e22ce);
-  border:1px solid #65dfff66;
-  border-radius:11px;
-  padding:15px 12px;
-  font:700 11px 'Orbitron',sans-serif;
-  letter-spacing:.7px;
-  box-shadow:0 8px 25px #4338ca30;
-  transition:.2s;
-}
-
-.btn:active{transform:scale(.97)}
-
-.footer{
-  margin-top:22px;
-  padding-top:15px;
-  border-top:1px solid #22263a;
-  color:#515975;
-  font:9px 'Orbitron',sans-serif;
-  letter-spacing:1.5px;
-}
-
-.verified{border-color:#00ff9d66}
-.verified .scanner{border-color:var(--green);box-shadow:0 0 35px #00ff9d22}
-.verified .scanner:before{border-color:#00ff9d77}
-.verified .tag{color:var(--green);border-color:#00ff9d55}
-.verified .bar{background:linear-gradient(90deg,#00d084,#00ff9d)}
-.verified .btn{background:linear-gradient(100deg,#047857,#059669);border-color:#00ff9d66}
-
-.banned{border-color:#ff386477;animation:shake .35s}
-.banned .scanner{border-color:var(--red);box-shadow:0 0 35px #ff386422}
-.banned .scanner:before{border-color:#ff386477}
-.banned .tag{color:#ff6b87;border-color:#ff386455}
-.banned .btn{background:linear-gradient(100deg,#991b1b,#dc2626);border-color:#ff386477}
-.banned .bar{background:linear-gradient(90deg,#dc2626,#ff3864)}
-
-@keyframes shake{
-  25%{transform:translateX(-4px)}
-  75%{transform:translateX(4px)}
-}
-
-@media(max-width:360px){
-  .card{padding:23px 15px}
-  h1{font-size:18px}
-  .brand{font-size:11px}
-}
-
-@media(prefers-reduced-motion:reduce){
-  *,*:before,*:after{animation:none!important;transition:none!important}
-}
+.badge{display:inline-block;padding:8px 12px;border:1px solid #00eaff44;border-radius:5px;color:var(--cyan);background:#00eaff0b;font:700 9px Orbitron,sans-serif;letter-spacing:1.5px;margin-bottom:14px}
+h1{font:800 20px Orbitron,sans-serif;line-height:1.5;margin-bottom:10px}
+.desc{font-size:15px;line-height:1.6;color:#9ba5c1;margin-bottom:22px}
+.progress-info{display:flex;justify-content:space-between;color:#8a94b1;font:9px Orbitron,sans-serif;margin-bottom:9px}
+.progress{height:7px;background:#20263b;border-radius:9px;overflow:hidden;margin-bottom:19px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#00d9ff,#8b5cf6);box-shadow:0 0 15px #00eaff;transition:width .5s}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:20px}
+.step{border:1px solid #252c43;border-radius:9px;padding:10px 2px;color:#66708e;font-size:11px;font-weight:700;background:#0a0e1b}
+.step strong{display:block;font:10px Orbitron,sans-serif;margin-bottom:5px}
+.step.active{border-color:#00eaff66;color:#7df7ff;background:#00eaff0a}
+.step.done{border-color:#00ffa344;color:var(--green)}
+.rules{text-align:left;padding:14px;border:1px solid #292e47;border-radius:13px;background:#080c18;margin-bottom:17px}
+.rule-title{font:700 10px Orbitron,sans-serif;letter-spacing:1px;color:var(--cyan);margin-bottom:11px}
+.rule{display:flex;align-items:center;gap:9px;font-size:13px;padding:7px 0;color:#d6dcef;border-bottom:1px solid #20263a}
+.rule:last-child{border:0}
+.rule .icon{margin-left:auto;font-size:17px}
+.info,.api{display:none;text-align:left;padding:13px;border:1px solid #293149;background:#080c18;border-radius:12px;margin-bottom:15px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #222940;font-size:12px}
+.row:last-child{border:0}
+.label{color:#8490af}.value{text-align:right;color:#edf4ff;overflow-wrap:anywhere;font-family:monospace;font-size:11px}
+.api-head{display:flex;justify-content:space-between;color:var(--cyan);font-size:10px;margin-bottom:10px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#9df8ff;font:11px/1.6 monospace;max-height:170px;overflow:auto}
+.btn{display:none;text-decoration:none;color:white;padding:14px;border-radius:10px;background:linear-gradient(100deg,#075985,#4338ca,#7e22ce);font:700 11px Orbitron,sans-serif;letter-spacing:.5px}
+.footer{border-top:1px solid #252a3d;padding-top:15px;margin-top:20px;color:#59627e;font:9px Orbitron,sans-serif;letter-spacing:1px}
+.verified{border-color:#00ffa366;box-shadow:0 0 35px #00ffa315}
+.verified .badge{color:var(--green);border-color:#00ffa355}
+.verified .orb{border-color:var(--green);box-shadow:0 0 30px #00ffa322}
+.verified .bar{background:linear-gradient(90deg,#00c982,#00ffa3)}
+.verified .btn{background:linear-gradient(100deg,#047857,#059669)}
+.banned{border-color:#ff416c88;box-shadow:0 0 35px #ff416c20}
+.banned .badge{color:#ff7893;border-color:#ff416c66}
+.banned .orb{border-color:var(--red);box-shadow:0 0 30px #ff416c22}
+.banned .bar{background:linear-gradient(90deg,#dc2626,#ff416c)}
+.banned .btn{background:linear-gradient(100deg,#991b1b,#dc2626)}
+@media(max-width:360px){.card{padding:23px 14px}h1{font-size:17px}.brand{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
-
 <body>
 <div class="card" id="card">
+ <div class="top"><span>SVP / SECURITY CORE</span><span class="live">● SYSTEM ONLINE</span></div>
+ <div class="brand">SUPER<span>VERIFY</span> PRO</div>
+ <div class="orb"><div class="symbol" id="symbol">🛡️</div></div>
+ <div class="badge" id="badge">DEVICE SECURITY CHECK</div>
+ <h1 id="title">VERIFY YOUR DEVICE</h1>
+ <p class="desc" id="message">Checking your device and account registration. Please wait...</p>
+ <div class="progress-info" id="progressInfo"><span id="stepText">INITIALIZING</span><span id="percent">00%</span></div>
+ <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
+ <div class="steps" id="steps">
+  <div class="step active" id="s1"><strong>01</strong>DEVICE</div>
+  <div class="step" id="s2"><strong>02</strong>ACCOUNT</div>
+  <div class="step" id="s3"><strong>03</strong>VERIFY</div>
+ </div>
 
-  <div class="topline">
-    <span>SVP // 01.0</span>
-    <span class="live"><i class="dot"></i> SYSTEM ONLINE</span>
-  </div>
+ <div class="rules">
+  <div class="rule-title">✦ SECURITY RULES</div>
+  <div class="rule">1 Device + 1 User + 1 Bot <span class="icon">✅</span></div>
+  <div class="rule">1 Device + 2 Users + 1 Bot <span class="icon">🚫</span></div>
+  <div class="rule">1 Device + 2 Users + 2 Bots <span class="icon">✅</span></div>
+  <div class="rule">2 Devices + 2 Users + 2 Bots <span class="icon">✅</span></div>
+ </div>
 
-  <div class="brand">SUPER<span>VERIFY</span> PRO</div>
-
-  <div class="scanner">
-    <div class="scanline" id="scanline"></div>
-    <div class="shield" id="icon">🛡️</div>
-  </div>
-
-  <div class="tag" id="badge">SECURITY PROTOCOL</div>
-
-  <h1 id="title">DEVICE VERIFICATION</h1>
-
-  <p class="description" id="message">
-    Initializing secure verification protocol. Please wait while your request is processed.
-  </p>
-
-  <div class="progress-info" id="progressInfo">
-    <span id="stepText">INITIALIZING</span>
-    <span id="percent">00%</span>
-  </div>
-
-  <div class="progress" id="progress">
-    <div class="bar" id="bar"></div>
-  </div>
-
-  <div class="steps" id="steps">
-    <div class="step active" id="s1"><span class="num">01</span>INITIALIZE</div>
-    <div class="step" id="s2"><span class="num">02</span>DEVICE CHECK</div>
-    <div class="step" id="s3"><span class="num">03</span>VERIFY</div>
-  </div>
-
-  <div class="info" id="info"></div>
-
-  <div class="api" id="api">
-    <div class="api-head">
-      <span>⚡ SERVER RESPONSE</span>
-      <span id="http">WAITING</span>
-    </div>
-    <pre id="json"></pre>
-  </div>
-
-  <a href="#" class="btn" id="btn">↗ CONTINUE TO TELEGRAM</a>
-
-  <div class="footer">ENCRYPTED INTERFACE • SECURE ACCESS</div>
+ <div class="info" id="info"></div>
+ <div class="api" id="api">
+  <div class="api-head"><span>⚡ SERVER RESPONSE</span><span id="http">WAITING</span></div>
+  <pre id="json"></pre>
+ </div>
+ <a href="#" class="btn" id="btn">↗ CONTINUE TO TELEGRAM</a>
+ <div class="footer">SECURE ACCESS • DEVICE PROTECTION</div>
 </div>
 
 <script>
 const $=id=>document.getElementById(id);
-const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
 function fingerprint(){
-  const raw=[
-    navigator.userAgent,
-    screen.width+"x"+screen.height,
-    screen.colorDepth,
-    new Date().getTimezoneOffset(),
-    navigator.hardwareConcurrency||4
-  ].join("|");
-
-  let hash=0;
-  for(let i=0;i<raw.length;i++){
-    hash=((hash<<5)-hash)+raw.charCodeAt(i);
-    hash|=0;
-  }
-  return "DEV-"+(hash>>>0).toString(16).toUpperCase();
+ const raw=[navigator.userAgent,screen.width+"x"+screen.height,
+ screen.colorDepth,new Date().getTimezoneOffset(),
+ navigator.hardwareConcurrency||4].join("|");
+ let h=0;
+ for(let i=0;i<raw.length;i++){h=((h<<5)-h)+raw.charCodeAt(i);h|=0}
+ return "DEV-"+(h>>>0).toString(16).toUpperCase();
 }
-
 function safe(v){
-  return String(v??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
-  }[c]));
+ return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
-function setProgress(n,label,active){
-  $("bar").style.width=n+"%";
-  $("percent").textContent=String(n).padStart(2,"0")+"%";
-  $("stepText").textContent=label;
-
-  ["s1","s2","s3"].forEach((id,i)=>{
-    $(id).className="step "+(i+1<active?"done":i+1===active?"active":"");
-  });
+function progress(n,label,active){
+ $("bar").style.width=n+"%";
+ $("percent").textContent=String(n).padStart(2,"0")+"%";
+ $("stepText").textContent=label;
+ ["s1","s2","s3"].forEach((id,i)=>$(id).className="step "+(i+1<active?"done":i+1===active?"active":""));
 }
-
 function fail(title,message){
-  $("card").className="card banned";
-  $("badge").textContent="ACCESS / ERROR";
-  $("icon").textContent="⚠️";
-  $("title").textContent=title;
-  $("message").textContent=message;
+ $("card").className="card banned";
+ $("badge").textContent="VERIFICATION ERROR";
+ $("symbol").textContent="⚠️";
+ $("title").textContent=title;
+ $("message").textContent=message;
+ $("progress").style.display="none";
+ $("progressInfo").style.display="none";
+ $("steps").style.display="none";
+}
+async function start(){
+ const params=new URLSearchParams(location.search);
+ const userid=params.get("userid");
+ const bot=(params.get("bot")||"MyTelegramBot").replace(/^@/,"");
+
+ if(!userid||!/^\d+$/.test(userid)||!/^[a-zA-Z0-9_]{5,32}$/.test(bot)){
+  fail("INVALID VERIFICATION LINK","Please open a valid verification link from your Telegram bot.");
+  return;
+ }
+
+ const deviceId=fingerprint();
+ progress(20,"DEVICE CHECK",1);
+ await sleep(350);
+ $("message").textContent="Checking account registration for this bot...";
+ progress(50,"ACCOUNT CHECK",2);
+ await sleep(350);
+ $("message").textContent="Contacting the verification server...";
+ progress(75,"SERVER VERIFY",3);
+
+ try{
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),10000);
+  let res;
+  try{
+   res=await fetch("/api/verify",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    signal:controller.signal,
+    body:JSON.stringify({userid,bot,deviceId})
+   });
+  }finally{clearTimeout(timer)}
+
+  let data;
+  try{data=await res.json()}catch{throw new Error("Invalid server response")}
+
   $("progress").style.display="none";
   $("progressInfo").style.display="none";
   $("steps").style.display="none";
-  $("scanline").style.display="none";
-}
+  $("api").style.display="block";
+  $("json").textContent=JSON.stringify(data,null,2);
+  $("http").textContent="HTTP "+res.status;
 
-async function start(){
-  const params=new URLSearchParams(location.search);
-  const userid=params.get("userid");
-  const bot=(params.get("bot")||"MyTelegramBot").replace(/^@/,"");
+  const denied=!res.ok||data.status==="banned";
 
-  if(!userid||!/^\d+$/.test(userid)||
-     !/^[a-zA-Z0-9_]{5,32}$/.test(bot)){
-    fail("INVALID VERIFICATION LINK",
-      "Please open a valid verification link from your Telegram bot.");
-    return;
+  if(denied){
+   $("card").className="card banned";
+   $("badge").textContent="✖ ACCESS DENIED";
+   $("symbol").textContent="🚫";
+   $("title").textContent="ACCESS RESTRICTED";
+   $("message").textContent=data.message||"Access denied by the verification server.";
+   $("btn").textContent="↗ RETURN TO @"+bot;
+  }else if(data.status==="verified"||data.status==="success"){
+   $("card").className="card verified";
+   $("badge").textContent="✔ ACCESS GRANTED";
+   $("symbol").textContent="✓";
+   $("title").textContent="VERIFICATION SUCCESSFUL";
+   $("message").textContent="Your verification has been accepted by the server.";
+   $("btn").textContent="✦ CONTINUE TO @"+bot;
+  }else{
+   fail("VERIFICATION PENDING","The server has not confirmed verification. Please try again.");
+   $("api").style.display="block";
+   $("json").textContent=JSON.stringify(data,null,2);
+   $("http").textContent="HTTP "+res.status;
+   return;
   }
 
-  const deviceId=fingerprint();
+  const rows=[
+   ["BOT NAME","@"+bot],
+   ["USER ID",userid],
+   ["DEVICE ID",deviceId],
+   ["RESULT",denied?"ACCESS DENIED":"VERIFIED"]
+  ];
+  $("info").style.display="block";
+  $("info").innerHTML=rows.map(([a,b])=>'<div class="row"><span class="label">'+safe(a)+'</span><span class="value">'+safe(b)+'</span></div>').join("");
+  $("btn").href="https://t.me/"+bot;
+  $("btn").style.display="block";
 
-  setProgress(20,"INITIALIZING",1);
-  await sleep(400);
-
-  $("message").textContent="Preparing the verification request...";
-  setProgress(45,"DEVICE CHECK",2);
-  await sleep(400);
-
-  $("message").textContent="Contacting the verification server...";
-  setProgress(75,"SERVER CHECK",3);
-
-  try{
-    const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),10000);
-
-    let res;
-    try{
-      res=await fetch("/api/verify",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        signal:controller.signal,
-        body:JSON.stringify({
-          userid:userid,
-          bot:bot,
-          deviceId:deviceId
-        })
-      });
-    }finally{
-      clearTimeout(timer);
-    }
-
-    let data;
-    try{
-      data=await res.json();
-    }catch{
-      throw new Error("Invalid server response");
-    }
-
-    $("progress").style.display="none";
-    $("progressInfo").style.display="none";
-    $("steps").style.display="none";
-
-    $("api").style.display="block";
-    $("json").textContent=JSON.stringify(data,null,2);
-    $("http").textContent="HTTP "+res.status;
-
-    const denied=!res.ok||data.status==="banned";
-
-    if(denied){
-      $("card").className="card banned";
-      $("badge").textContent="ACCESS DENIED";
-      $("icon").textContent="🚫";
-      $("title").textContent="ACCESS RESTRICTED";
-      $("message").textContent=data.message||
-        "The verification server denied this request.";
-      $("btn").textContent="↗ RETURN TO @"+bot;
-    }else if(data.status==="verified"||data.status==="success"){
-      $("card").className="card verified";
-      $("badge").textContent="IDENTITY VERIFIED";
-      $("icon").textContent="✓";
-      $("title").textContent="VERIFICATION COMPLETE";
-      $("message").textContent=
-        "Verification accepted. You may now continue to your Telegram bot.";
-      $("btn").textContent="✦ CONTINUE TO @"+bot;
-    }else{
-      fail("VERIFICATION PENDING",
-        "The server has not confirmed verification. Please try again.");
-      $("api").style.display="block";
-      $("json").textContent=JSON.stringify(data,null,2);
-      $("http").textContent="HTTP "+res.status;
-      return;
-    }
-
-    $("info").style.display="block";
-    const rows=[
-      ["BOT NAME","@"+bot],
-      ["USER ID",userid],
-      ["DEVICE ID",deviceId],
-      ["STATUS",denied?"ACCESS DENIED":"VERIFIED"]
-    ];
-
-    $("info").innerHTML=
-      '<div class="section-title">▣ VERIFICATION DETAILS</div>'+
-      rows.map(([label,value])=>
-        '<div class="row"><span class="label">'+safe(label)+
-        '</span><span class="value">'+safe(value)+'</span></div>'
-      ).join("");
-
-    $("btn").href="https://t.me/"+bot;
-    $("btn").style.display="block";
-
-  }catch(error){
-    fail("CONNECTION FAILED",
-      error.name==="AbortError"
-      ?"The server timed out. Please try again."
-      :"Unable to connect to the verification server.");
-  }
+ }catch(e){
+  fail("SERVER CONNECTION ERROR",e.name==="AbortError"?"The server timed out. Please try again.":"Unable to connect to the verification server.");
+ }
 }
-
 start();
 </script>
 </body>
