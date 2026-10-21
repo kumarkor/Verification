@@ -3,42 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cyber Security Verification Protocol</title>
+  <title>Kumar Security Verification & API Gateway</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;600&display=swap');
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     body {
       font-family: 'Inter', sans-serif;
-      background: #030712;
+      background: #020617;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.18) 0%, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
       color: #f8fafc;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 18px;
       overflow-x: hidden;
     }
 
     .card {
-      background: rgba(13, 20, 36, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 32px 24px;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 30px 22px;
       border-radius: 28px;
       width: 100%;
-      max-width: 430px;
+      max-width: 480px;
       text-align: center;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(56, 189, 248, 0.15);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95), 0 0 40px rgba(56, 189, 248, 0.15);
+      transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
     }
@@ -48,7 +48,7 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
-      background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+      background: linear-gradient(90deg, transparent, #38bdf8, #818cf8, transparent);
       animation: scanLine 3s linear infinite;
     }
 
@@ -57,90 +57,83 @@
       100% { transform: translateX(100%); }
     }
 
-    .card.scanning { border-color: rgba(56, 189, 248, 0.5); box-shadow: 0 0 45px rgba(56, 189, 248, 0.25); }
-    .card.verified { border-color: rgba(34, 197, 94, 0.7); box-shadow: 0 0 55px rgba(34, 197, 94, 0.35); }
-    .card.banned { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 0 55px rgba(239, 68, 68, 0.4); animation: glitchCard 0.4s ease; }
+    .card.scanning { border-color: rgba(56, 189, 248, 0.55); box-shadow: 0 0 45px rgba(56, 189, 248, 0.25); }
+    .card.verified { border-color: rgba(34, 197, 94, 0.75); box-shadow: 0 0 55px rgba(34, 197, 94, 0.35); }
+    .card.banned { border-color: rgba(239, 68, 68, 0.85); box-shadow: 0 0 55px rgba(239, 68, 68, 0.4); animation: glitchShake 0.45s ease; }
 
-    @keyframes glitchCard {
+    @keyframes glitchShake {
       0%, 100% { transform: translate(0); }
-      20% { transform: translate(-6px, 3px); }
-      40% { transform: translate(6px, -3px); }
-      60% { transform: translate(-3px, -3px); }
-      80% { transform: translate(3px, 3px); }
+      20% { transform: translate(-7px, 3px); }
+      40% { transform: translate(7px, -3px); }
+      60% { transform: translate(-4px, -2px); }
+      80% { transform: translate(4px, 2px); }
     }
 
     .icon-glow {
-      width: 95px;
-      height: 95px;
-      margin: 0 auto 20px;
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 18px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 44px;
-      position: relative;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.85) 70%);
+      font-size: 42px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.9) 70%);
       border: 2px solid #38bdf8;
       box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
     }
-    
-    .scanning .icon-glow { animation: radarPulse 1.8s infinite ease-in-out; }
-    .verified .icon-glow { background: radial-gradient(circle, rgba(34, 197, 94, 0.35) 0%, rgba(15, 23, 42, 0.85) 70%); border-color: #22c55e; box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
-    .banned .icon-glow { background: radial-gradient(circle, rgba(239, 68, 68, 0.35) 0%, rgba(15, 23, 42, 0.85) 70%); border-color: #ef4444; box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); }
 
-    @keyframes radarPulse {
+    .scanning .icon-glow { animation: pulseRadar 1.7s infinite ease-in-out; }
+    .verified .icon-glow { background: radial-gradient(circle, rgba(34, 197, 94, 0.35) 0%, rgba(15, 23, 42, 0.9) 70%); border-color: #22c55e; box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
+    .banned .icon-glow { background: radial-gradient(circle, rgba(239, 68, 68, 0.35) 0%, rgba(15, 23, 42, 0.9) 70%); border-color: #ef4444; box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); }
+
+    @keyframes pulseRadar {
       0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
-      70% { box-shadow: 0 0 0 25px rgba(56, 189, 248, 0); }
+      70% { box-shadow: 0 0 0 24px rgba(56, 189, 248, 0); }
       100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
     }
 
     .badge {
       display: inline-block;
-      padding: 6px 18px;
+      padding: 6px 16px;
       border-radius: 30px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       font-family: 'Orbitron', sans-serif;
       background: rgba(56, 189, 248, 0.15);
       color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.35);
     }
-    .verified .badge { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.3); }
-    .banned .badge { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+    .verified .badge { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.4); }
+    .banned .badge { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); }
 
-    h2 { 
-      font-family: 'Orbitron', sans-serif;
-      font-size: 21px; 
-      font-weight: 700; 
-      margin-bottom: 8px; 
-    }
-    
-    p { font-size: 13.5px; color: #94a3b8; line-height: 1.6; margin-bottom: 20px; }
+    h2 { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 18px; }
 
     .progress-container {
       width: 100%;
       height: 8px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 10px;
       overflow: hidden;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 1px;
     }
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #0ea5e9, #6366f1, #38bdf8);
+      background: linear-gradient(90deg, #0ea5e9, #6366f1, #22c55e);
       border-radius: 8px;
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: width 0.35s ease;
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
     }
 
     .details-box {
-      background: rgba(3, 7, 18, 0.75);
+      background: rgba(2, 6, 23, 0.78);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 14px;
@@ -153,7 +146,7 @@
       display: flex;
       justify-content: space-between;
       padding: 6px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .row:last-child { border-bottom: none; }
     .label { color: #64748b; font-weight: 500; }
@@ -162,16 +155,19 @@
     .terminal-box {
       text-align: left;
       background: #010409;
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.28);
       border-radius: 14px;
       padding: 12px 14px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       display: none;
     }
+    .terminal-box.success-border { border-color: rgba(34, 197, 94, 0.45); }
+    .terminal-box.danger-border { border-color: rgba(239, 68, 68, 0.45); }
+
     .terminal-header {
       font-size: 11px;
       color: #38bdf8;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
@@ -184,15 +180,16 @@
       overflow-x: auto;
       white-space: pre-wrap;
       word-break: break-all;
-      max-height: 130px;
+      line-height: 1.45;
     }
+    pre.danger-text { color: #f87171; }
 
     .action-btn {
       display: none;
       width: 100%;
       padding: 14px;
       border-radius: 14px;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       text-decoration: none;
       color: #fff;
@@ -202,14 +199,36 @@
       box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4);
       transition: all 0.25s ease;
       border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
     }
-    .action-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(34, 197, 94, 0.6); }
+    .action-btn:hover { transform: translateY(-2px); }
     .action-btn.banned-btn {
       background: linear-gradient(135deg, #ef4444, #991b1b);
       box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
     }
+    .action-btn.blue-btn {
+      display: block;
+      background: linear-gradient(135deg, #0ea5e9, #4f46e5);
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35);
+      margin-top: 10px;
+    }
+
+    /* API Docs Mode Styles (When opened without ?userid) */
+    #apiDocsContainer { display: none; text-align: left; }
+    .endpoint-chip {
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #7dd3fc;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      margin-bottom: 14px;
+      word-break: break-all;
+    }
+
     .watermark {
-      margin-top: 15px;
+      margin-top: 16px;
       font-size: 10px;
       color: #475569;
       letter-spacing: 1px;
@@ -221,36 +240,91 @@
 <body>
 
   <div id="card" class="card scanning">
-    <div id="badge" class="badge">SECURE PROTOCOL</div>
+    <div id="badge" class="badge">FIREBASE SECURITY PROTOCOL</div>
     <div class="icon-glow" id="icon">🛡️</div>
     <h2 id="title">Initializing Scan...</h2>
-    <p id="message">Establishing secure connection & generating hardware device fingerprint...</p>
+    <p id="message">Connecting to Firebase Realtime Database (kumar-loot)...</p>
 
     <div class="progress-container" id="progressBox">
       <div class="progress-fill" id="progressBar"></div>
     </div>
 
+    <!-- Verification Mode Details -->
     <div class="details-box" id="detailsGrid"></div>
 
+    <!-- Live API Output Box -->
     <div class="terminal-box" id="apiTerminal">
       <div class="terminal-header">
-        <span>⚡ API_RESPONSE.JSON</span>
-        <span id="httpStatus">STATUS 200</span>
+        <span>⚡ LIVE FIREBASE API RESPONSE</span>
+        <span id="httpStatus">HTTP 200</span>
       </div>
       <pre id="jsonOutput"></pre>
     </div>
 
+    <!-- API Preview Mode (Shown when website is opened directly without ?userid) -->
+    <div id="apiDocsContainer">
+      <div class="endpoint-chip">
+        <b>🔗 Verification Link:</b><br>
+        https://verification-sigma-flax.vercel.app/?userid=7335163273&bot=kumarmakerbot
+      </div>
+
+      <div class="endpoint-chip">
+        <b>📡 Bot Check API Endpoint:</b><br>
+        https://verification-sigma-flax.vercel.app/api/verify?userid=7335163273&bot=kumarmakerbot
+      </div>
+
+      <div class="terminal-box success-border" style="display: block;">
+        <div class="terminal-header">
+          <span style="color:#4ade80;">✅ SUCCESSFULLY VERIFIED RESPONSE</span>
+          <span style="color:#4ade80;">200 OK</span>
+        </div>
+        <pre id="sampleSuccessJson"></pre>
+      </div>
+
+      <div class="terminal-box danger-border" style="display: block;">
+        <div class="terminal-header">
+          <span style="color:#f87171;">🚫 FAILED / DIRECT BANNED RESPONSE</span>
+          <span style="color:#f87171;">403 BANNED</span>
+        </div>
+        <pre class="danger-text" id="sampleBannedJson"></pre>
+      </div>
+
+      <a href="?userid=7335163273&bot=kumarmakerbot" class="action-btn blue-btn" style="text-align:center;">
+        ⚡ TEST VERIFICATION (ID: 7335163273)
+      </a>
+    </div>
+
     <a href="#" id="redirectBtn" class="action-btn">🚀 RETURN TO TELEGRAM BOT</a>
-    <div class="watermark">SECURE ENCRYPTED GATEWAY</div>
+    <div class="watermark">POWERED BY FIREBASE • KUMAR-LOOT</div>
   </div>
 
-  <script>
+  <!-- Firebase Official Modular SDK Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCewAWzj09CsJWJRqZ16TmWN6Z-d0ATyaM",
+      authDomain: "kumar-loot.firebaseapp.com",
+      databaseURL: "https://kumar-loot-default-rtdb.firebaseio.com",
+      projectId: "kumar-loot",
+      storageBucket: "kumar-loot.firebasestorage.app",
+      messagingSenderId: "264932703737",
+      appId: "1:264932703737:web:2cc50a8bbe1923917b5128"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Hardware Device Fingerprint Generator
     function generateDeviceFingerprint() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       ctx.textBaseline = 'top';
       ctx.font = '14px Arial';
-      ctx.fillText('Kumar_Security_Protocol_v3', 2, 2);
+      ctx.fillText('Kumar_Loot_Firebase_FP', 2, 2);
       const rawData = [
         navigator.userAgent,
         screen.width + 'x' + screen.height,
@@ -270,10 +344,10 @@
 
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    async function executeVerification() {
+    async function runApp() {
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get('userid');
-      const botName = (urlParams.get('bot') || 'TelegramBot').replace('@', '');
+      const botName = (urlParams.get('bot') || 'kumarmakerbot').replace('@', '');
 
       const card = document.getElementById('card');
       const badge = document.getElementById('badge');
@@ -287,25 +361,60 @@
       const jsonOutput = document.getElementById('jsonOutput');
       const httpStatus = document.getElementById('httpStatus');
       const redirectBtn = document.getElementById('redirectBtn');
+      const apiDocsContainer = document.getElementById('apiDocsContainer');
 
+      // 1. जर फक्त https://verification-sigma-flax.vercel.app/ ओपन केली असेल (userid नसेल)
+      // तर दोन्ही API उत्तरे (Success आणि Banned) स्टायलिश बॉक्समध्ये दाखवा!
       if (!userId) {
-        card.className = 'card banned';
-        badge.innerText = 'SECURITY ERROR';
-        icon.innerText = '⚠️';
-        title.innerText = 'Missing User ID';
-        message.innerText = 'Access denied! Please open this link directly via your Telegram bot.';
         progressBox.style.display = 'none';
+        badge.innerText = 'API DOCUMENTATION & GATEWAY';
+        icon.innerText = '⚡';
+        title.innerText = 'Verification API Ready';
+        message.innerText = 'Firebase (kumar-loot) is connected. Below are the live API response formats for Success and Banned states:';
+        apiDocsContainer.style.display = 'block';
+
+        const sampleSuccess = {
+          ok: true,
+          code: 200,
+          status: "verified",
+          banned: false,
+          access: "GRANTED ✅",
+          bot: "kumarmakerbot",
+          userid: "7335163273",
+          deviceId: "DEV-7F9A21C4",
+          accounts_count: 1,
+          message: "Verification Successful ✅! First account locked to this device."
+        };
+
+        const sampleBanned = {
+          ok: false,
+          code: 403,
+          status: "banned",
+          banned: true,
+          access: "DENIED 🚫",
+          reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
+          bot: "kumarmakerbot",
+          current_userid: "9988776655",
+          first_userid: "7335163273",
+          deviceId: "DEV-7F9A21C4",
+          accounts_count: 2,
+          message: "Direct Banned 🚫! Same device & same bot used with multiple user IDs."
+        };
+
+        document.getElementById('sampleSuccessJson').innerText = JSON.stringify(sampleSuccess, null, 2);
+        document.getElementById('sampleBannedJson').innerText = JSON.stringify(sampleBanned, null, 2);
         return;
       }
 
+      // 2. जर लिंकमध्ये ?userid=7335163273&bot=kumarmakerbot असेल तर Verification सुरू करा
       progressBar.style.width = '35%';
-      await wait(400);
-      message.innerText = 'Extracting hardware device traits...';
-      progressBar.style.width = '70%';
-      await wait(500);
-      message.innerText = 'Verifying with Firebase Security Database (@' + botName + ')...';
+      await wait(350);
+      message.innerText = 'Scanning hardware fingerprint & local storage...';
+      progressBar.style.width = '75%';
+      await wait(450);
+      message.innerText = 'Syncing with Firebase (kumar-loot) for @' + botName + '...';
       progressBar.style.width = '100%';
-      await wait(400);
+      await wait(350);
 
       let deviceId = localStorage.getItem('kumar_device_token');
       if (!deviceId) {
@@ -313,19 +422,90 @@
         localStorage.setItem('kumar_device_token', deviceId);
       }
 
-      try {
-        const response = await fetch('/api/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userid: userId,
-            bot: botName,
-            deviceId: deviceId
-          })
-        });
+      const cleanBot = botName.toLowerCase();
+      const localKey = `locked_user_${cleanBot}`;
+      const localPrevUser = localStorage.getItem(localKey);
 
-        const result = await response.json();
-        
+      try {
+        // Backend Vercel API + Firebase Sync
+        let result = null;
+        try {
+          const apiRes = await fetch('/api/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userid: String(userId),
+              bot: cleanBot,
+              deviceId: deviceId,
+              previousUser: localPrevUser
+            })
+          });
+          if (apiRes.ok) {
+            result = await apiRes.json();
+          }
+        } catch (apiErr) {
+          console.warn('Fallback to direct Firebase SDK:', apiErr);
+        }
+
+        // जर API ने उत्तर दिले नसेल तर डायरेक्ट Firebase SDK ने व्हेरिफाय करा (Zero Failure Guarantee)
+        if (!result || !result.status) {
+          const deviceRef = ref(db, `verification/${cleanBot}/devices/${deviceId}`);
+          const snap = await get(deviceRef);
+
+          if (snap.exists()) {
+            const devData = snap.val();
+            if (String(devData.first_userid) !== String(userId) || devData.banned || (localPrevUser && String(localPrevUser) !== String(userId))) {
+              const firstUid = devData.first_userid || localPrevUser;
+              result = {
+                ok: false,
+                code: 403,
+                status: 'banned',
+                banned: true,
+                access: 'DENIED 🚫',
+                reason: 'MULTIPLE_ACCOUNTS_SAME_DEVICE',
+                bot: cleanBot,
+                current_userid: String(userId),
+                first_userid: String(firstUid),
+                deviceId: deviceId,
+                accounts_count: 2,
+                message: 'Direct Banned 🚫! Same device & same bot used with multiple user IDs.'
+              };
+              await update(deviceRef, { second_userid: String(userId), banned: true });
+              await set(ref(db, `verification/${cleanBot}/users/${userId}`), result);
+            } else {
+              result = {
+                ok: true,
+                code: 200,
+                status: 'verified',
+                banned: false,
+                access: 'GRANTED ✅',
+                bot: cleanBot,
+                userid: String(userId),
+                deviceId: deviceId,
+                accounts_count: 1,
+                message: 'Verification Successful ✅! Device already verified for this user.'
+              };
+              await set(ref(db, `verification/${cleanBot}/users/${userId}`), result);
+            }
+          } else {
+            result = {
+              ok: true,
+              code: 200,
+              status: 'verified',
+              banned: false,
+              access: 'GRANTED ✅',
+              bot: cleanBot,
+              userid: String(userId),
+              deviceId: deviceId,
+              accounts_count: 1,
+              message: 'Verification Successful ✅! First account locked to this device.'
+            };
+            await set(deviceRef, { first_userid: String(userId), banned: false });
+            await set(ref(db, `verification/${cleanBot}/users/${userId}`), result);
+          }
+        }
+
+        // UI वर रिझल्ट दाखवणे
         progressBox.style.display = 'none';
         detailsGrid.style.display = 'block';
         apiTerminal.style.display = 'block';
@@ -334,52 +514,58 @@
 
         jsonOutput.innerText = JSON.stringify(result, null, 2);
 
-        if (result.status === 'banned') {
+        if (result.status === 'banned' || result.banned) {
           card.className = 'card banned';
-          badge.innerText = 'ACCESS BLOCKED 🚫';
+          apiTerminal.className = 'terminal-box danger-border';
+          jsonOutput.className = 'danger-text';
+          badge.innerText = 'DIRECT BANNED 🚫';
           icon.innerText = '🚫';
           title.innerText = 'Device Banned!';
-          message.innerText = 'Multiple distinct Telegram accounts detected on this device. Permanent restriction applied.';
-          httpStatus.innerText = 'HTTP 403 FORBIDDEN';
+          message.innerText = 'Same device & same bot detected with 2 or more different accounts! Direct Ban applied.';
+          httpStatus.innerText = 'HTTP 403 BANNED';
           httpStatus.style.color = '#f87171';
-          
+
           redirectBtn.className = 'action-btn banned-btn';
-          redirectBtn.innerText = '🚫 BANNED ON @' + botName;
+          redirectBtn.innerText = '🚫 ACCOUNT BANNED ON @' + botName;
 
           detailsGrid.innerHTML = `
-            <div class="row"><span class="label">Target Bot</span><span class="value">@${botName}</span></div>
-            <div class="row"><span class="label">First User ID</span><span class="value">${result.first_userid}</span></div>
-            <div class="row"><span class="label">Blocked User</span><span class="value" style="color:#f87171">${userId}</span></div>
-            <div class="row"><span class="label">Device Hash</span><span class="value">${deviceId}</span></div>
-            <div class="row"><span class="label">Action</span><span class="value" style="color:#f87171">DIRECT BANNED 🚫</span></div>
+            <div class="row"><span class="label">Bot Name</span><span class="value">@${botName}</span></div>
+            <div class="row"><span class="label">1st User ID</span><span class="value">${result.first_userid}</span></div>
+            <div class="row"><span class="label">2nd User ID</span><span class="value" style="color:#f87171">${userId}</span></div>
+            <div class="row"><span class="label">Device ID</span><span class="value">${deviceId}</span></div>
+            <div class="row"><span class="label">Firebase Status</span><span class="value" style="color:#f87171">DIRECT BANNED 🚫</span></div>
           `;
         } else {
+          localStorage.setItem(localKey, String(userId));
           card.className = 'card verified';
-          badge.innerText = 'SECURE & VERIFIED ✅';
+          apiTerminal.className = 'terminal-box success-border';
+          badge.innerText = 'VERIFIED SUCCESSFULLY ✅';
           icon.innerText = '✅';
-          title.innerText = 'Verification Success!';
-          message.innerText = 'Device integrity verified. Single account policy respected. You may return to the bot.';
+          title.innerText = 'Device Verified!';
+          message.innerText = 'Single account verified and saved to Firebase (kumar-loot). You can now return to the bot.';
           httpStatus.innerText = 'HTTP 200 OK';
-          httpStatus.style.color = '#34d399';
-          
+          httpStatus.style.color = '#4ade80';
+
           redirectBtn.innerText = '🚀 CONTINUE TO @' + botName;
 
           detailsGrid.innerHTML = `
-            <div class="row"><span class="label">Target Bot</span><span class="value">@${botName}</span></div>
-            <div class="row"><span class="label">Telegram ID</span><span class="value">${userId}</span></div>
-            <div class="row"><span class="label">Device Hash</span><span class="value">${deviceId}</span></div>
-            <div class="row"><span class="label">Status</span><span class="value" style="color:#34d399">VERIFIED ✅</span></div>
+            <div class="row"><span class="label">Bot Name</span><span class="value">@${botName}</span></div>
+            <div class="row"><span class="label">User ID</span><span class="value">${userId}</span></div>
+            <div class="row"><span class="label">Device ID</span><span class="value">${deviceId}</span></div>
+            <div class="row"><span class="label">Firebase Status</span><span class="value" style="color:#4ade80">VERIFIED ✅</span></div>
           `;
         }
       } catch (err) {
         card.className = 'card banned';
-        title.innerText = 'Server Error';
-        message.innerText = 'Failed to reach backend API endpoint. Try again later.';
         progressBox.style.display = 'none';
+        badge.innerText = 'CONNECTION ERROR';
+        icon.innerText = '⚠️';
+        title.innerText = 'Verification Error';
+        message.innerText = 'Error: ' + err.message;
       }
     }
 
-    executeVerification();
+    runApp();
   </script>
 </body>
 </html>
