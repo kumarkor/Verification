@@ -9,31 +9,36 @@ const firebaseConfig = {
   appId: "1:264932703737:web:2cc50a8bbe1923917b5128"
 };
 
-export default async function handler(req, res) {
-  // CORS Headers जेणेकरून कुठूनही रिक्वेस्ट ब्लॉक होणार नाही
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// Backup Memory (जर Firebase चे Rules लॉक असतील तरीही API क्रॅश होणार नाही)
+const memoryDevices = new Map();
+const memoryUsers = new Map();
 
-  if (req.method === 'OPTIONS') {
+module.exports = async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
   const DB_URL = firebaseConfig.databaseURL;
 
   // ==========================================================
-  // 1. GET Request: Telegram Bot ने किंवा युजरने API चेक केल्यास
+  // 1. GET Request: जेव्हा बॉट किंवा ब्राउझर /api/verify चेक करेल
   // ==========================================================
-  if (req.method === 'GET') {
-    const { userid, bot } = req.query;
+  if (req.method === "GET") {
+    const query = req.query || {};
+    const userid = query.userid;
+    const bot = (query.bot || "kumarmakerbot").toLowerCase().replace("@", "");
 
-    // जर कोणी फक्त /api/verify ओपन केली तर दोन्ही Sample Responses दाखवा
+    // जर लिंकमध्ये userid नसेल तर दोन्ही Sample Responses (Verified & Banned) दाखवा
     if (!userid) {
       return res.status(200).json({
         ok: true,
         firebase_project: firebaseConfig.projectId,
-        api_endpoint: "https://verification-sigma-flax.vercel.app/api/verify?userid=7335163273&bot=kumarmakerbot",
-        when_verified_response: {
+        usage: "https://verification-sigma-flax.vercel.app/api/verify?userid=7335163273&bot=kumarmakerbot",
+        verified_sample: {
           ok: true,
           code: 200,
           status: "verified",
@@ -45,7 +50,7 @@ export default async function handler(req, res) {
           accounts_count: 1,
           message: "Verification Successful ✅! First account locked to this device."
         },
-        when_banned_response: {
+        banned_sample: {
           ok: false,
           code: 403,
           status: "banned",
@@ -63,49 +68,94 @@ export default async function handler(req, res) {
     }
 
     try {
-      const cleanBot = (bot || 'kumarmakerbot').toLowerCase().replace('@', '');
-      const response = await fetch(`${DB_URL}/verification/${cleanBot}/users/${userid}.json`);
-      const userData = await response.json();
+      let userData = null;
+      try {
+        const fbRes = await fetch(`${DB_URL}/verification/${bot}/users/${userid}.json`);
+        const fbJson = await fbRes.json();
+        if (fbJson && !fbJson.error) {
+          userData = fbJson;
+        }
+      } catch (e) {
+        // Fallback to memory
+      }
+
+      if (!userData) {
+        userData = memoryUsers.get(`${bot}_${userid}`);
+      }
 
       if (!userData) {
         return res.status(200).json({
           ok: false,
           code: 404,
-          status: 'pending',
+          status: "pending",
           banned: false,
-          bot: cleanBot,
+          bot: bot,
           userid: String(userid),
-          message: 'User has not completed device verification yet ⏳'
+          message: "User has not completed device verification yet ⏳",
+          verify_link: `https://verification-sigma-flax.vercel.app/?userid=${userid}&bot=${bot}`
         });
       }
 
       return res.status(200).json(userData);
-    } catch (error) {
-      return res.status(500).json({ ok: false, error: error.message });
+    } catch (err) {
+      return res.status(200).json({
+        ok: false,
+        status: "error",
+        message: err.message
+      });
     }
   }
 
   // ==========================================================
-  // 2. POST Request: युजरने लिंक उघडल्यावर Device + Bot + User चेक करणे
+  // 2. POST Request: जेव्हा युजर व्हेरिफिकेशन पेज उघडेल
   // ==========================================================
-  if (req.method === 'POST') {
-    const { userid, bot, deviceId, previousUser } = req.body || {};
+  if (req.method === "POST") {
+    let body = req.body || {};
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        body = {};
+      }
+    }
+
+    const userid = body.userid;
+    const bot = (body.bot || "kumarmakerbot").toLowerCase().replace("@", "");
+    const deviceId = body.deviceId;
+    const previousUser = body.previousUser;
 
     if (!userid || !deviceId) {
-      return res.status(400).json({ ok: false, status: 'error', message: 'Missing userid or deviceId' });
+      return res.status(400).json({
+        ok: false,
+        status: "error",
+        message: "Missing userid or deviceId"
+      });
     }
 
     try {
-      const cleanBot = (bot || 'kumarmakerbot').toLowerCase().replace('@', '');
-      const deviceUrl = `${DB_URL}/verification/${cleanBot}/devices/${deviceId}.json`;
-      const userUrl = `${DB_URL}/verification/${cleanBot}/users/${userid}.json`;
+      const devKey = `${bot}_${deviceId}`;
+      const deviceUrl = `${DB_URL}/verification/${bot}/devices/${deviceId}.json`;
+      const userUrl = `${DB_URL}/verification/${bot}/users/${userid}.json`;
 
-      const deviceRes = await fetch(deviceUrl);
-      const deviceData = await deviceRes.json();
+      let deviceData = null;
+      try {
+        const devRes = await fetch(deviceUrl);
+        const devJson = await devRes.json();
+        if (devJson && !devJson.error) {
+          deviceData = devJson;
+        }
+      } catch (e) {
+        // Fallback to memory if Firebase fails
+      }
 
-      // चेक १: आधीचा युजर आणि आत्ताचा युजर वेगळा आहे का? (Same Device + Same Bot + 2 Users = DIRECT BAN 🚫)
+      if (!deviceData) {
+        deviceData = memoryDevices.get(devKey);
+      }
+
       const existingFirstUser = deviceData ? deviceData.first_userid : previousUser;
-      const isMultiAccount = 
+
+      // जर एकाच Device वर आणि एकाच Bot वर दुसरा वेगळा User आला -> DIRECT BANNED 🚫
+      const isMultiAccount =
         (previousUser && String(previousUser) !== String(userid)) ||
         (deviceData && (deviceData.banned || String(deviceData.first_userid) !== String(userid)));
 
@@ -113,83 +163,100 @@ export default async function handler(req, res) {
         const banResponse = {
           ok: false,
           code: 403,
-          status: 'banned',
+          status: "banned",
           banned: true,
-          access: 'DENIED 🚫',
-          reason: 'MULTIPLE_ACCOUNTS_SAME_DEVICE',
-          bot: cleanBot,
+          access: "DENIED 🚫",
+          reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
+          bot: bot,
           current_userid: String(userid),
           first_userid: String(existingFirstUser || userid),
           deviceId: String(deviceId),
           accounts_count: 2,
-          message: 'Direct Banned 🚫! Same device & same bot used with multiple user IDs.'
+          message: "Direct Banned 🚫! Same device & same bot used with multiple user IDs."
         };
 
-        // Firebase मध्ये डिव्हाइस आणि दोन्ही युजर Banned म्हणून सेव्ह करणे
-        await fetch(deviceUrl, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            first_userid: String(existingFirstUser || userid),
-            second_userid: String(userid),
-            banned: true,
-            updatedAt: new Date().toISOString()
-          })
+        memoryDevices.set(devKey, {
+          first_userid: String(existingFirstUser || userid),
+          second_userid: String(userid),
+          banned: true
         });
-
-        await fetch(userUrl, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(banResponse)
-        });
-
+        memoryUsers.set(`${bot}_${userid}`, banResponse);
         if (existingFirstUser) {
-          await fetch(`${DB_URL}/verification/${cleanBot}/users/${existingFirstUser}.json`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+          memoryUsers.set(`${bot}_${existingFirstUser}`, banResponse);
+        }
+
+        // Save to Firebase Realtime Database
+        try {
+          await fetch(deviceUrl, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              first_userid: String(existingFirstUser || userid),
+              second_userid: String(userid),
+              banned: true,
+              updatedAt: new Date().toISOString()
+            })
+          });
+          await fetch(userUrl, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(banResponse)
           });
-        }
+          if (existingFirstUser) {
+            await fetch(`${DB_URL}/verification/${bot}/users/${existingFirstUser}.json`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(banResponse)
+            });
+          }
+        } catch (e) {}
 
         return res.status(200).json(banResponse);
       }
 
-      // चेक २: पहिलाच युजर आहे किंवा तोच युजर पुन्हा आला आहे -> VERIFIED SUCCESSFULLY ✅
+      // जर पहिलाच युजर असेल किंवा तोच युजर परत आला असेल -> VERIFIED SUCCESSFULLY ✅
       const successResponse = {
         ok: true,
         code: 200,
-        status: 'verified',
+        status: "verified",
         banned: false,
-        access: 'GRANTED ✅',
-        bot: cleanBot,
+        access: "GRANTED ✅",
+        bot: bot,
         userid: String(userid),
         deviceId: String(deviceId),
         accounts_count: 1,
-        message: 'Verification Successful ✅! Single account verified on this device.'
+        message: "Verification Successful ✅! Single account verified on this device."
       };
 
-      await fetch(deviceUrl, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          first_userid: String(userid),
-          banned: false,
-          updatedAt: new Date().toISOString()
-        })
-      });
+      memoryDevices.set(devKey, { first_userid: String(userid), banned: false });
+      memoryUsers.set(`${bot}_${userid}`, successResponse);
 
-      await fetch(userUrl, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(successResponse)
-      });
+      try {
+        await fetch(deviceUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            first_userid: String(userid),
+            banned: false,
+            updatedAt: new Date().toISOString()
+          })
+        });
+        await fetch(userUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(successResponse)
+        });
+      } catch (e) {}
 
       return res.status(200).json(successResponse);
-
-    } catch (error) {
-      return res.status(500).json({ ok: false, error: error.message });
+    } catch (err) {
+      return res.status(200).json({
+        ok: false,
+        status: "error",
+        message: err.message
+      });
     }
   }
 
-  return res.status(405).json({ error: 'Method Not Allowed' });
-}
+  return res.status(405).json({ ok: false, message: "Method Not Allowed" });
+};
