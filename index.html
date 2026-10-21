@@ -213,7 +213,6 @@
       margin-top: 10px;
     }
 
-    /* API Docs Mode Styles (When opened without ?userid) */
     #apiDocsContainer { display: none; text-align: left; }
     .endpoint-chip {
       background: rgba(14, 165, 233, 0.12);
@@ -249,10 +248,8 @@
       <div class="progress-fill" id="progressBar"></div>
     </div>
 
-    <!-- Verification Mode Details -->
     <div class="details-box" id="detailsGrid"></div>
 
-    <!-- Live API Output Box -->
     <div class="terminal-box" id="apiTerminal">
       <div class="terminal-header">
         <span>⚡ LIVE FIREBASE API RESPONSE</span>
@@ -261,10 +258,9 @@
       <pre id="jsonOutput"></pre>
     </div>
 
-    <!-- API Preview Mode (Shown when website is opened directly without ?userid) -->
     <div id="apiDocsContainer">
       <div class="endpoint-chip">
-        <b>🔗 Verification Link:</b><br>
+        <b>🔗 User Verification Link:</b><br>
         https://verification-sigma-flax.vercel.app/?userid=7335163273&bot=kumarmakerbot
       </div>
 
@@ -290,7 +286,7 @@
       </div>
 
       <a href="?userid=7335163273&bot=kumarmakerbot" class="action-btn blue-btn" style="text-align:center;">
-        ⚡ TEST VERIFICATION (ID: 7335163273)
+        ⚡ START VERIFICATION (ID: 7335163273)
       </a>
     </div>
 
@@ -298,12 +294,10 @@
     <div class="watermark">POWERED BY FIREBASE • KUMAR-LOOT</div>
   </div>
 
-  <!-- Firebase Official Modular SDK Integration -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCewAWzj09CsJWJRqZ16TmWN6Z-d0ATyaM",
       authDomain: "kumar-loot.firebaseapp.com",
@@ -314,11 +308,9 @@
       appId: "1:264932703737:web:2cc50a8bbe1923917b5128"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Hardware Device Fingerprint Generator
     function generateDeviceFingerprint() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -363,17 +355,15 @@
       const redirectBtn = document.getElementById('redirectBtn');
       const apiDocsContainer = document.getElementById('apiDocsContainer');
 
-      // 1. जर फक्त https://verification-sigma-flax.vercel.app/ ओपन केली असेल (userid नसेल)
-      // तर दोन्ही API उत्तरे (Success आणि Banned) स्टायलिश बॉक्समध्ये दाखवा!
       if (!userId) {
         progressBox.style.display = 'none';
         badge.innerText = 'API DOCUMENTATION & GATEWAY';
         icon.innerText = '⚡';
         title.innerText = 'Verification API Ready';
-        message.innerText = 'Firebase (kumar-loot) is connected. Below are the live API response formats for Success and Banned states:';
+        message.innerText = 'Firebase (kumar-loot) is connected. Below are the API responses for Verified and Banned states:';
         apiDocsContainer.style.display = 'block';
 
-        const sampleSuccess = {
+        document.getElementById('sampleSuccessJson').innerText = JSON.stringify({
           ok: true,
           code: 200,
           status: "verified",
@@ -384,9 +374,9 @@
           deviceId: "DEV-7F9A21C4",
           accounts_count: 1,
           message: "Verification Successful ✅! First account locked to this device."
-        };
+        }, null, 2);
 
-        const sampleBanned = {
+        document.getElementById('sampleBannedJson').innerText = JSON.stringify({
           ok: false,
           code: 403,
           status: "banned",
@@ -399,17 +389,13 @@
           deviceId: "DEV-7F9A21C4",
           accounts_count: 2,
           message: "Direct Banned 🚫! Same device & same bot used with multiple user IDs."
-        };
-
-        document.getElementById('sampleSuccessJson').innerText = JSON.stringify(sampleSuccess, null, 2);
-        document.getElementById('sampleBannedJson').innerText = JSON.stringify(sampleBanned, null, 2);
+        }, null, 2);
         return;
       }
 
-      // 2. जर लिंकमध्ये ?userid=7335163273&bot=kumarmakerbot असेल तर Verification सुरू करा
       progressBar.style.width = '35%';
       await wait(350);
-      message.innerText = 'Scanning hardware fingerprint & local storage...';
+      message.innerText = 'Scanning hardware fingerprint & device storage...';
       progressBar.style.width = '75%';
       await wait(450);
       message.innerText = 'Syncing with Firebase (kumar-loot) for @' + botName + '...';
@@ -427,85 +413,19 @@
       const localPrevUser = localStorage.getItem(localKey);
 
       try {
-        // Backend Vercel API + Firebase Sync
-        let result = null;
-        try {
-          const apiRes = await fetch('/api/verify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userid: String(userId),
-              bot: cleanBot,
-              deviceId: deviceId,
-              previousUser: localPrevUser
-            })
-          });
-          if (apiRes.ok) {
-            result = await apiRes.json();
-          }
-        } catch (apiErr) {
-          console.warn('Fallback to direct Firebase SDK:', apiErr);
-        }
+        const apiRes = await fetch('/api/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userid: String(userId),
+            bot: cleanBot,
+            deviceId: deviceId,
+            previousUser: localPrevUser
+          })
+        });
 
-        // जर API ने उत्तर दिले नसेल तर डायरेक्ट Firebase SDK ने व्हेरिफाय करा (Zero Failure Guarantee)
-        if (!result || !result.status) {
-          const deviceRef = ref(db, `verification/${cleanBot}/devices/${deviceId}`);
-          const snap = await get(deviceRef);
+        const result = await apiRes.json();
 
-          if (snap.exists()) {
-            const devData = snap.val();
-            if (String(devData.first_userid) !== String(userId) || devData.banned || (localPrevUser && String(localPrevUser) !== String(userId))) {
-              const firstUid = devData.first_userid || localPrevUser;
-              result = {
-                ok: false,
-                code: 403,
-                status: 'banned',
-                banned: true,
-                access: 'DENIED 🚫',
-                reason: 'MULTIPLE_ACCOUNTS_SAME_DEVICE',
-                bot: cleanBot,
-                current_userid: String(userId),
-                first_userid: String(firstUid),
-                deviceId: deviceId,
-                accounts_count: 2,
-                message: 'Direct Banned 🚫! Same device & same bot used with multiple user IDs.'
-              };
-              await update(deviceRef, { second_userid: String(userId), banned: true });
-              await set(ref(db, `verification/${cleanBot}/users/${userId}`), result);
-            } else {
-              result = {
-                ok: true,
-                code: 200,
-                status: 'verified',
-                banned: false,
-                access: 'GRANTED ✅',
-                bot: cleanBot,
-                userid: String(userId),
-                deviceId: deviceId,
-                accounts_count: 1,
-                message: 'Verification Successful ✅! Device already verified for this user.'
-              };
-              await set(ref(db, `verification/${cleanBot}/users/${userId}`), result);
-            }
-          } else {
-            result = {
-              ok: true,
-              code: 200,
-              status: 'verified',
-              banned: false,
-              access: 'GRANTED ✅',
-              bot: cleanBot,
-              userid: String(userId),
-              deviceId: deviceId,
-              accounts_count: 1,
-              message: 'Verification Successful ✅! First account locked to this device.'
-            };
-            await set(deviceRef, { first_userid: String(userId), banned: false });
-            await set(ref(db, `verification/${cleanBot}/users/${userId}`), result);
-          }
-        }
-
-        // UI वर रिझल्ट दाखवणे
         progressBox.style.display = 'none';
         detailsGrid.style.display = 'block';
         apiTerminal.style.display = 'block';
@@ -533,7 +453,7 @@
             <div class="row"><span class="label">1st User ID</span><span class="value">${result.first_userid}</span></div>
             <div class="row"><span class="label">2nd User ID</span><span class="value" style="color:#f87171">${userId}</span></div>
             <div class="row"><span class="label">Device ID</span><span class="value">${deviceId}</span></div>
-            <div class="row"><span class="label">Firebase Status</span><span class="value" style="color:#f87171">DIRECT BANNED 🚫</span></div>
+            <div class="row"><span class="label">Result</span><span class="value" style="color:#f87171">DIRECT BANNED 🚫</span></div>
           `;
         } else {
           localStorage.setItem(localKey, String(userId));
@@ -552,7 +472,7 @@
             <div class="row"><span class="label">Bot Name</span><span class="value">@${botName}</span></div>
             <div class="row"><span class="label">User ID</span><span class="value">${userId}</span></div>
             <div class="row"><span class="label">Device ID</span><span class="value">${deviceId}</span></div>
-            <div class="row"><span class="label">Firebase Status</span><span class="value" style="color:#4ade80">VERIFIED ✅</span></div>
+            <div class="row"><span class="label">Result</span><span class="value" style="color:#4ade80">VERIFIED ✅</span></div>
           `;
         }
       } catch (err) {
