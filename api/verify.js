@@ -1,6 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get, set } from "firebase/database";
-
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCewAWzj09CsJWJRqZ16TmWN6Z-d0ATyaM",
   authDomain: "kumar-loot.firebaseapp.com",
@@ -11,99 +9,153 @@ const firebaseConfig = {
   appId: "1:264932703737:web:2cc50a8bbe1923917b5128"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
 export default async function handler(req, res) {
-  // 1. Telegram Bot कडून GET Request आली तर स्टेटस चेक करणे
+  // CORS Headers जेणेकरून कुठूनही रिक्वेस्ट ब्लॉक होणार नाही
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  const DB_URL = firebaseConfig.databaseURL;
+
+  // ==========================================================
+  // 1. GET Request: Telegram Bot ने किंवा युजरने API चेक केल्यास
+  // ==========================================================
   if (req.method === 'GET') {
     const { userid, bot } = req.query;
-    if (!userid || !bot) {
-      return res.status(400).json({ ok: false, message: 'Provide userid and bot' });
+
+    // जर कोणी फक्त /api/verify ओपन केली तर दोन्ही Sample Responses दाखवा
+    if (!userid) {
+      return res.status(200).json({
+        ok: true,
+        firebase_project: firebaseConfig.projectId,
+        api_endpoint: "https://verification-sigma-flax.vercel.app/api/verify?userid=7335163273&bot=kumarmakerbot",
+        when_verified_response: {
+          ok: true,
+          code: 200,
+          status: "verified",
+          banned: false,
+          access: "GRANTED ✅",
+          bot: "kumarmakerbot",
+          userid: "7335163273",
+          deviceId: "DEV-7F9A21C4",
+          accounts_count: 1,
+          message: "Verification Successful ✅! First account locked to this device."
+        },
+        when_banned_response: {
+          ok: false,
+          code: 403,
+          status: "banned",
+          banned: true,
+          access: "DENIED 🚫",
+          reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
+          bot: "kumarmakerbot",
+          current_userid: "9988776655",
+          first_userid: "7335163273",
+          deviceId: "DEV-7F9A21C4",
+          accounts_count: 2,
+          message: "Direct Banned 🚫! Same device & same bot used with multiple user IDs."
+        }
+      });
     }
 
     try {
-      const cleanBot = bot.toLowerCase().replace('@', '');
-      const userRef = ref(db, `verification/${cleanBot}/users/${userid}`);
-      const snapshot = await get(userRef);
+      const cleanBot = (bot || 'kumarmakerbot').toLowerCase().replace('@', '');
+      const response = await fetch(`${DB_URL}/verification/${cleanBot}/users/${userid}.json`);
+      const userData = await response.json();
 
-      if (!snapshot.exists()) {
+      if (!userData) {
         return res.status(200).json({
           ok: false,
+          code: 404,
           status: 'pending',
           banned: false,
           bot: cleanBot,
-          userid,
+          userid: String(userid),
           message: 'User has not completed device verification yet ⏳'
         });
       }
 
-      return res.status(200).json(snapshot.val());
+      return res.status(200).json(userData);
     } catch (error) {
       return res.status(500).json({ ok: false, error: error.message });
     }
   }
 
-  // 2. युजरने वेबसाइट उघडल्यावर POST Request द्वारे Firebase तपणे
+  // ==========================================================
+  // 2. POST Request: युजरने लिंक उघडल्यावर Device + Bot + User चेक करणे
+  // ==========================================================
   if (req.method === 'POST') {
-    const { userid, bot, deviceId } = req.body;
+    const { userid, bot, deviceId, previousUser } = req.body || {};
 
-    if (!userid || !bot || !deviceId) {
-      return res.status(400).json({ status: 'error', message: 'Missing parameters' });
+    if (!userid || !deviceId) {
+      return res.status(400).json({ ok: false, status: 'error', message: 'Missing userid or deviceId' });
     }
 
     try {
-      const cleanBot = bot.toLowerCase().replace('@', '');
-      const deviceRef = ref(db, `verification/${cleanBot}/devices/${deviceId}`);
-      const deviceSnap = await get(deviceRef);
+      const cleanBot = (bot || 'kumarmakerbot').toLowerCase().replace('@', '');
+      const deviceUrl = `${DB_URL}/verification/${cleanBot}/devices/${deviceId}.json`;
+      const userUrl = `${DB_URL}/verification/${cleanBot}/users/${userid}.json`;
 
-      let responseData;
+      const deviceRes = await fetch(deviceUrl);
+      const deviceData = await deviceRes.json();
 
-      if (deviceSnap.exists()) {
-        const deviceData = deviceSnap.val();
+      // चेक १: आधीचा युजर आणि आत्ताचा युजर वेगळा आहे का? (Same Device + Same Bot + 2 Users = DIRECT BAN 🚫)
+      const existingFirstUser = deviceData ? deviceData.first_userid : previousUser;
+      const isMultiAccount = 
+        (previousUser && String(previousUser) !== String(userid)) ||
+        (deviceData && (deviceData.banned || String(deviceData.first_userid) !== String(userid)));
 
-        // जर त्याच डिव्हाइसवर आधीच दुसरा User ID रजिस्टर असेल तर -> DIRECT BANNED 🚫
-        if (String(deviceData.first_userid) !== String(userid) || deviceData.banned) {
-          responseData = {
-            ok: false,
-            code: 403,
-            status: 'banned',
-            banned: true,
-            access: 'DENIED 🚫',
-            reason: 'MULTIPLE_ACCOUNTS_SAME_DEVICE',
-            bot: cleanBot,
-            current_userid: String(userid),
-            first_userid: String(deviceData.first_userid),
-            deviceId,
-            message: 'Direct Banned 🚫! Multiple Telegram accounts used on the same device.'
-          };
-
-          // Firebase मध्ये डिव्हाइस आणि युजर दोघांना Banned मार्क करणे
-          await set(deviceRef, { first_userid: deviceData.first_userid, second_userid: String(userid), banned: true });
-          await set(ref(db, `verification/${cleanBot}/users/${userid}`), responseData);
-
-          return res.status(200).json(responseData);
-        }
-
-        // जर तोच जुना युजर परत आला तर Verified ✅
-        responseData = {
-          ok: true,
-          code: 200,
-          status: 'verified',
-          banned: false,
-          access: 'GRANTED ✅',
+      if (isMultiAccount) {
+        const banResponse = {
+          ok: false,
+          code: 403,
+          status: 'banned',
+          banned: true,
+          access: 'DENIED 🚫',
+          reason: 'MULTIPLE_ACCOUNTS_SAME_DEVICE',
           bot: cleanBot,
-          userid: String(userid),
-          deviceId,
-          message: 'Verification Successful ✅! Device already registered to this user.'
+          current_userid: String(userid),
+          first_userid: String(existingFirstUser || userid),
+          deviceId: String(deviceId),
+          accounts_count: 2,
+          message: 'Direct Banned 🚫! Same device & same bot used with multiple user IDs.'
         };
 
-        await set(ref(db, `verification/${cleanBot}/users/${userid}`), responseData);
-        return res.status(200).json(responseData);
+        // Firebase मध्ये डिव्हाइस आणि दोन्ही युजर Banned म्हणून सेव्ह करणे
+        await fetch(deviceUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            first_userid: String(existingFirstUser || userid),
+            second_userid: String(userid),
+            banned: true,
+            updatedAt: new Date().toISOString()
+          })
+        });
+
+        await fetch(userUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(banResponse)
+        });
+
+        if (existingFirstUser) {
+          await fetch(`${DB_URL}/verification/${cleanBot}/users/${existingFirstUser}.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(banResponse)
+          });
+        }
+
+        return res.status(200).json(banResponse);
       }
 
-      // जर हा डिव्हाइसवर पहिलाच युजर असेल तर -> SUCCESSFUL ✅
-      responseData = {
+      // चेक २: पहिलाच युजर आहे किंवा तोच युजर पुन्हा आला आहे -> VERIFIED SUCCESSFULLY ✅
+      const successResponse = {
         ok: true,
         code: 200,
         status: 'verified',
@@ -111,15 +163,28 @@ export default async function handler(req, res) {
         access: 'GRANTED ✅',
         bot: cleanBot,
         userid: String(userid),
-        deviceId,
-        message: 'Verification Successful ✅! First account locked to this device.'
+        deviceId: String(deviceId),
+        accounts_count: 1,
+        message: 'Verification Successful ✅! Single account verified on this device.'
       };
 
-      // Firebase मध्ये सेव्ह करणे
-      await set(deviceRef, { first_userid: String(userid), banned: false });
-      await set(ref(db, `verification/${cleanBot}/users/${userid}`), responseData);
+      await fetch(deviceUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          first_userid: String(userid),
+          banned: false,
+          updatedAt: new Date().toISOString()
+        })
+      });
 
-      return res.status(200).json(responseData);
+      await fetch(userUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(successResponse)
+      });
+
+      return res.status(200).json(successResponse);
 
     } catch (error) {
       return res.status(500).json({ ok: false, error: error.message });
