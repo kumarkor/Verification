@@ -11,7 +11,7 @@
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #05050a;
+      background-color: #040509;
       color: #f8fafc;
       min-height: 100vh;
       display: flex;
@@ -39,7 +39,7 @@
     .wrapper { width: 100%; max-width: 440px; z-index: 1; }
 
     .card {
-      background: linear-gradient(165deg, rgba(24, 24, 38, 0.9), rgba(10, 10, 18, 0.95));
+      background: linear-gradient(165deg, rgba(22, 24, 38, 0.92), rgba(9, 10, 18, 0.96));
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -52,12 +52,12 @@
       overflow: hidden;
     }
 
-    .card.scanning { border-color: rgba(99, 102, 241, 0.45); box-shadow: 0 20px 55px rgba(99, 102, 241, 0.2); }
-    .card.verified { border-color: rgba(16, 185, 129, 0.65); box-shadow: 0 20px 60px rgba(16, 185, 129, 0.28); }
-    .card.already { border-color: rgba(6, 182, 212, 0.65); box-shadow: 0 20px 60px rgba(6, 182, 212, 0.28); }
+    .card.scanning { border-color: rgba(99, 102, 241, 0.5); box-shadow: 0 20px 55px rgba(99, 102, 241, 0.22); }
+    .card.verified { border-color: rgba(16, 185, 129, 0.7); box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3); }
+    .card.already { border-color: rgba(6, 182, 212, 0.7); box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3); }
     .card.banned {
-      border-color: rgba(244, 63, 94, 0.75);
-      box-shadow: 0 20px 60px rgba(244, 63, 94, 0.35);
+      border-color: rgba(244, 63, 94, 0.8);
+      box-shadow: 0 20px 60px rgba(244, 63, 94, 0.38);
       animation: shakeAlert 0.45s ease;
     }
 
@@ -235,13 +235,18 @@
 
       <div id="docsView">
         <div class="url-box">
-          <b>🔗 Verification Link Format:</b><br>
+          <b>🔗 Verification Link:</b><br>
           https://verification-sigma-flax.vercel.app/?userid=7335163273&bot=Kumar_api_bot
+        </div>
+
+        <div class="url-box">
+          <b>📡 API Check Endpoint:</b><br>
+          https://verification-sigma-flax.vercel.app/api/verify?userid=7335163273&bot=Kumar_api_bot
         </div>
 
         <div class="code-panel green" style="display:block;">
           <div class="code-top">
-            <span style="color:#34d399;">1. FIRST TIME VERIFIED ✅</span>
+            <span style="color:#34d399;">✅ 1. SUCCESSFULLY VERIFIED</span>
             <span style="color:#34d399;">200 OK</span>
           </div>
           <pre id="docSuccess"></pre>
@@ -249,7 +254,7 @@
 
         <div class="code-panel cyan" style="display:block;">
           <div class="code-top">
-            <span style="color:#22d3ee;">2. ALREADY VERIFIED (SAME USER) ✅</span>
+            <span style="color:#22d3ee;">🛡️ 2. ALREADY VERIFIED (SAME USER)</span>
             <span style="color:#22d3ee;">200 OK</span>
           </div>
           <pre class="cyan-code" id="docAlready"></pre>
@@ -257,7 +262,7 @@
 
         <div class="code-panel red" style="display:block;">
           <div class="code-top">
-            <span style="color:#fb7185;">3. MULTI-ACCOUNT DIRECT BANNED 🚫</span>
+            <span style="color:#fb7185;">🚫 3. FAILED / DIRECT BANNED (2ND USER)</span>
             <span style="color:#fb7185;">403 BANNED</span>
           </div>
           <pre class="red-code" id="docBanned"></pre>
@@ -274,7 +279,7 @@
       const ctx = canvas.getContext('2d');
       ctx.textBaseline = 'top';
       ctx.font = '14px Arial';
-      ctx.fillText('Device_Shield_v5', 2, 2);
+      ctx.fillText('Shield_Protocol_v6', 2, 2);
       const raw = [
         navigator.userAgent,
         screen.width + 'x' + screen.height,
@@ -313,30 +318,35 @@
       const botButton = document.getElementById('botButton');
       const docsView = document.getElementById('docsView');
 
+      // Jar website direct open keli (without ?userid)
       if (!userId) {
         loaderBox.style.display = 'none';
         badgeText.innerText = 'API GATEWAY ACTIVE';
         iconBox.innerText = '⚡';
         titleText.innerText = 'Verification API Ready';
-        subText.innerText = 'Live response formats for Verified, Already Verified, and Banned states:';
+        subText.innerText = 'Below are the live API responses for Verified, Already Verified, and Banned states:';
         docsView.style.display = 'block';
 
         document.getElementById('docSuccess').innerText = JSON.stringify({
           ok: true, code: 200, status: "verified", verified: true, banned: false,
-          bot: "kumar_api_bot", userid: "7335163273", deviceId: "DEV-5718EFCE",
-          message: "Verification Successful ✅"
+          access: "GRANTED ✅", bot: "kumar_api_bot", userid: "7335163273",
+          deviceId: "DEV-460FCEA5", accounts_count: 1,
+          message: "Verification Successful ✅! First account locked to this device."
         }, null, 2);
 
         document.getElementById('docAlready').innerText = JSON.stringify({
           ok: true, code: 200, status: "already_verified", verified: true, banned: false,
-          bot: "kumar_api_bot", userid: "7335163273", deviceId: "DEV-5718EFCE",
-          message: "Already Verified ✅! Your account is already verified on this device."
+          access: "ALREADY VERIFIED ✅", bot: "kumar_api_bot", userid: "7335163273",
+          deviceId: "DEV-460FCEA5", accounts_count: 1,
+          message: "Already Verified ✅! Your primary account is verified on this device."
         }, null, 2);
 
         document.getElementById('docBanned').innerText = JSON.stringify({
           ok: false, code: 403, status: "banned", verified: false, banned: true,
-          bot: "kumar_api_bot", first_userid: "7335163273", current_userid: "9988776655",
-          deviceId: "DEV-5718EFCE", message: "Direct Banned 🚫! 2 different accounts used on the same device."
+          access: "DENIED 🚫", reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
+          bot: "kumar_api_bot", first_userid: "7335163273", current_userid: "8609907744",
+          deviceId: "DEV-460FCEA5", accounts_count: 2,
+          message: "Direct Banned 🚫! This device is already locked to 1st User (7335163273)."
         }, null, 2);
         return;
       }
@@ -349,15 +359,15 @@
       loaderBar.style.width = '100%';
       await sleep(200);
 
-      let deviceId = localStorage.getItem('shield_device_id_v5');
+      let deviceId = localStorage.getItem('shield_device_v6');
       if (!deviceId) {
         deviceId = getHardwareFingerprint();
-        localStorage.setItem('shield_device_id_v5', deviceId);
+        localStorage.setItem('shield_device_v6', deviceId);
       }
 
       const cleanBot = botName.toLowerCase();
-      const localKey = `shield_user_v5_${cleanBot}`;
-      const savedLocalUser = localStorage.getItem(localKey);
+      const ownerKey = `shield_owner_v6_${cleanBot}`;
+      const savedOwner = localStorage.getItem(ownerKey);
 
       try {
         const response = await fetch('/api/verify', {
@@ -367,18 +377,18 @@
             userid: userId,
             bot: cleanBot,
             deviceId: deviceId,
-            previousUser: (savedLocalUser && savedLocalUser !== 'null' && savedLocalUser !== 'undefined') ? savedLocalUser : ''
+            previousUser: (savedOwner && savedOwner !== 'null' && savedOwner !== 'undefined') ? savedOwner : ''
           })
         });
 
         let data = await response.json();
 
-        // EXTRA SAFETY: Jar 1st User ID aani 2nd User ID same astil (7335163273 === 7335163273), tar kadhihi Ban dakhavu naka!
+        // Safety Guarantee: Jar first_userid aani current_userid same astil tar Ban kadhihi dakhavu naka
         if (
           data.status === 'banned' &&
           String(data.first_userid || '').trim() === String(data.current_userid || userId).trim()
         ) {
-          const isAlready = (savedLocalUser === userId);
+          const isAlready = (savedOwner === userId);
           data = {
             ok: true,
             code: 200,
@@ -391,7 +401,7 @@
             deviceId: deviceId,
             accounts_count: 1,
             message: isAlready
-              ? "Already Verified ✅! Your account is already verified on this device."
+              ? "Already Verified ✅! Your primary account is verified on this device."
               : "Verification Successful ✅! First account locked to this device."
           };
         }
@@ -404,7 +414,7 @@
 
         apiCode.innerText = JSON.stringify(data, null, 2);
 
-        // 1. DIRECT BANNED (Fakt jevha 2 kharach vegvegle User IDs astil)
+        // 1. DIRECT BANNED (Fakt jevha 2nd User ID vegla asel)
         if (
           (data.status === 'banned' || data.banned === true) &&
           String(data.first_userid) !== String(data.current_userid)
@@ -424,15 +434,15 @@
 
           statsCard.innerHTML = `
             <div class="stat-item"><span class="stat-label">Bot</span><span class="stat-value">@${botName}</span></div>
-            <div class="stat-item"><span class="stat-label">1st User ID</span><span class="stat-value">${data.first_userid}</span></div>
-            <div class="stat-item"><span class="stat-label">2nd User ID</span><span class="stat-value" style="color:#fb7185">${data.current_userid}</span></div>
+            <div class="stat-item"><span class="stat-label">1st User (Safe)</span><span class="stat-value" style="color:#34d399">${data.first_userid}</span></div>
+            <div class="stat-item"><span class="stat-label">2nd User (Banned)</span><span class="stat-value" style="color:#fb7185">${data.current_userid}</span></div>
             <div class="stat-item"><span class="stat-label">Device ID</span><span class="stat-value">${deviceId}</span></div>
             <div class="stat-item"><span class="stat-label">Status</span><span class="stat-value" style="color:#fb7185">DIRECT BANNED 🚫</span></div>
           `;
         }
-        // 2. ALREADY VERIFIED
+        // 2. ALREADY VERIFIED (Same 1st User parat aala)
         else if (data.status === 'already_verified') {
-          localStorage.setItem(localKey, userId);
+          if (!savedOwner) localStorage.setItem(ownerKey, userId);
           card.className = 'card already';
           apiPanel.className = 'code-panel cyan';
           apiCode.className = 'cyan-code';
@@ -455,13 +465,13 @@
         }
         // 3. FIRST TIME VERIFIED
         else {
-          localStorage.setItem(localKey, userId);
+          if (!savedOwner) localStorage.setItem(ownerKey, userId);
           card.className = 'card verified';
           apiPanel.className = 'code-panel green';
           badgeText.innerText = 'VERIFICATION COMPLETE ✅';
           iconBox.innerText = '✅';
           titleText.innerText = 'Successfully Verified!';
-          subText.innerText = 'Your device has been verified and locked to your account.';
+          subText.innerText = 'Your device has been verified and locked to your primary account.';
           httpTag.innerText = 'HTTP 200 OK';
           httpTag.style.color = '#34d399';
 
