@@ -8,8 +8,7 @@ const firebaseConfig = {
   appId: "1:264932703737:web:2cc50a8bbe1923917b5128"
 };
 
-// Server Memory Database (Firebase Rules बंद असतील तरी १००% अचूक काम करेल)
-const globalStore = globalThis.__VERIFY_STORE__ || (globalThis.__VERIFY_STORE__ = {
+const globalStore = globalThis.__VERIFY_V5_CLEAN__ || (globalThis.__VERIFY_V5_CLEAN__ = {
   devices: new Map(),
   users: new Map()
 });
@@ -19,7 +18,6 @@ async function fbGet(url) {
     const res = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json();
-    // जर Firebase ने error दिला किंवा first_userid नसेल तर null परत करा
     if (!data || typeof data !== "object" || data.error) return null;
     return data;
   } catch (e) {
@@ -49,7 +47,7 @@ module.exports = async function handler(req, res) {
   const DB_URL = firebaseConfig.databaseURL;
 
   // ==========================================================
-  // 1. GET Request: Telegram Bot कडून Status Check
+  // 1. GET Request: Bot kiva Browser kadun Status Check
   // ==========================================================
   if (req.method === "GET") {
     const query = req.query || {};
@@ -60,31 +58,54 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({
         ok: true,
         status: "ready",
-        message: "Verification API is live and running."
+        verified_sample: {
+          ok: true,
+          code: 200,
+          status: "verified",
+          verified: true,
+          banned: false,
+          access: "GRANTED ✅",
+          bot: "kumar_api_bot",
+          userid: "7335163273",
+          deviceId: "DEV-460FCEA5",
+          accounts_count: 1,
+          message: "Verification Successful ✅! First account locked to this device."
+        },
+        already_verified_sample: {
+          ok: true,
+          code: 200,
+          status: "already_verified",
+          verified: true,
+          banned: false,
+          access: "ALREADY VERIFIED ✅",
+          bot: "kumar_api_bot",
+          userid: "7335163273",
+          deviceId: "DEV-460FCEA5",
+          accounts_count: 1,
+          message: "Already Verified ✅! Your primary account is verified on this device."
+        },
+        banned_sample: {
+          ok: false,
+          code: 403,
+          status: "banned",
+          verified: false,
+          banned: true,
+          access: "DENIED 🚫",
+          reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
+          bot: "kumar_api_bot",
+          first_userid: "7335163273",
+          current_userid: "8609907744",
+          deviceId: "DEV-460FCEA5",
+          accounts_count: 2,
+          message: "Direct Banned 🚫! This device is already locked to 1st User (7335163273)."
+        }
       });
     }
 
     const userKey = `${bot}_${userid}`;
-    let userData = await fbGet(`${DB_URL}/v3_shield/${bot}/users/${userid}.json`);
+    let userData = await fbGet(`${DB_URL}/v5_clean/${bot}/users/${userid}.json`);
     if (!userData || !userData.status) {
       userData = globalStore.users.get(userKey) || null;
-    }
-
-    // जर चुकून जुन्या डेटामध्ये सेम युजर बॅन दिसत असेल तर त्याला Verified करा
-    if (userData && userData.status === "banned" && String(userData.first_userid) === String(userData.current_userid)) {
-      userData = {
-        ok: true,
-        code: 200,
-        status: "already_verified",
-        verified: true,
-        banned: false,
-        access: "ALREADY VERIFIED ✅",
-        bot: bot,
-        userid: userid,
-        deviceId: userData.deviceId || "DEV-VERIFIED",
-        accounts_count: 1,
-        message: "Already Verified ✅! Your account is verified on this device."
-      };
     }
 
     if (!userData) {
@@ -104,7 +125,7 @@ module.exports = async function handler(req, res) {
   }
 
   // ==========================================================
-  // 2. POST Request: Mini App मधून Device Verification
+  // 2. POST Request: Mini App madhun Device Verification
   // ==========================================================
   if (req.method === "POST") {
     let body = req.body || {};
@@ -128,15 +149,15 @@ module.exports = async function handler(req, res) {
 
     const devKey = `${bot}_${deviceId}`;
     const userKey = `${bot}_${userid}`;
-    const deviceUrl = `${DB_URL}/v3_shield/${bot}/devices/${deviceId}.json`;
-    const userUrl = `${DB_URL}/v3_shield/${bot}/users/${userid}.json`;
+    const deviceUrl = `${DB_URL}/v5_clean/${bot}/devices/${deviceId}.json`;
+    const userUrl = `${DB_URL}/v5_clean/${bot}/users/${userid}.json`;
 
     let deviceData = await fbGet(deviceUrl);
     if (!deviceData || !deviceData.first_userid) {
       deviceData = globalStore.devices.get(devKey) || null;
     }
 
-    // मूळ पहिला युजर कोण होता ते काढा
+    // Ya device cha 1st User (Owner) kon ahe te check kara
     let firstUid = "";
     if (deviceData && deviceData.first_userid && deviceData.first_userid !== "undefined") {
       firstUid = String(deviceData.first_userid).trim();
@@ -145,78 +166,37 @@ module.exports = async function handler(req, res) {
     }
 
     // ----------------------------------------------------------
-    // CASE 1: जर या डिव्हाइसवर आधीच दुसरा वेगळा युजर होता (firstUid !== userid)
-    // फक्त तेव्हाच DIRECT BANNED 🚫 करा!
+    // CASE 1: Pahilach User ahe (Ajun device var konihi nahi) -> VERIFIED ✅
     // ----------------------------------------------------------
-    if (firstUid && firstUid !== userid) {
-      const banResponse = {
-        ok: false,
-        code: 403,
-        status: "banned",
-        verified: false,
-        banned: true,
-        access: "DENIED 🚫",
-        reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
+    if (!firstUid) {
+      const successResponse = {
+        ok: true,
+        code: 200,
+        status: "verified",
+        verified: true,
+        banned: false,
+        access: "GRANTED ✅",
         bot: bot,
-        first_userid: firstUid,
-        current_userid: userid,
+        userid: userid,
         deviceId: deviceId,
-        accounts_count: 2,
-        message: "Direct Banned 🚫! 2 different accounts used on the same device."
+        accounts_count: 1,
+        message: "Verification Successful ✅! First account locked to this device."
       };
 
-      globalStore.devices.set(devKey, {
-        first_userid: firstUid,
-        second_userid: userid,
-        banned: true
-      });
-      globalStore.users.set(userKey, banResponse);
-      globalStore.users.set(`${bot}_${firstUid}`, banResponse);
+      globalStore.devices.set(devKey, { first_userid: userid });
+      globalStore.users.set(userKey, successResponse);
 
-      await fbPut(deviceUrl, {
-        first_userid: firstUid,
-        second_userid: userid,
-        banned: true
-      });
-      await fbPut(userUrl, banResponse);
-      await fbPut(`${DB_URL}/v3_shield/${bot}/users/${firstUid}.json`, banResponse);
+      await fbPut(deviceUrl, { first_userid: userid });
+      await fbPut(userUrl, successResponse);
 
-      return res.status(200).json(banResponse);
-    }
-
-    // जर डिव्हाइसवर आधीच २ वेगवेगळे युजर असल्यामुळे बॅन लागला असेल
-    if (
-      deviceData &&
-      deviceData.banned === true &&
-      deviceData.second_userid &&
-      String(deviceData.second_userid).trim() !== firstUid
-    ) {
-      const secondUid = String(deviceData.second_userid).trim();
-      const banResponse = {
-        ok: false,
-        code: 403,
-        status: "banned",
-        verified: false,
-        banned: true,
-        access: "DENIED 🚫",
-        reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
-        bot: bot,
-        first_userid: firstUid,
-        current_userid: secondUid,
-        deviceId: deviceId,
-        accounts_count: 2,
-        message: "Direct Banned 🚫! 2 different accounts used on the same device."
-      };
-
-      globalStore.users.set(userKey, banResponse);
-      return res.status(200).json(banResponse);
+      return res.status(200).json(successResponse);
     }
 
     // ----------------------------------------------------------
-    // CASE 2: जर तोच युजर पुन्हा आला असेल (firstUid === userid)
-    // तर ALREADY VERIFIED ✅ दाखवा (कधीही Ban करू नका!)
+    // CASE 2: Toch 1st User parat aala (firstUid === userid)
+    // Tar to nehami ALREADY VERIFIED ✅ rahil (Kadhihi Ban honar nahi!)
     // ----------------------------------------------------------
-    if (firstUid && firstUid === userid) {
+    if (firstUid === userid) {
       const alreadyResponse = {
         ok: true,
         code: 200,
@@ -228,42 +208,43 @@ module.exports = async function handler(req, res) {
         userid: userid,
         deviceId: deviceId,
         accounts_count: 1,
-        message: "Already Verified ✅! Your account is already verified on this device."
+        message: "Already Verified ✅! Your primary account is verified on this device."
       };
 
-      globalStore.devices.set(devKey, { first_userid: userid, banned: false });
+      globalStore.devices.set(devKey, { first_userid: firstUid });
       globalStore.users.set(userKey, alreadyResponse);
 
-      await fbPut(deviceUrl, { first_userid: userid, banned: false });
+      await fbPut(deviceUrl, { first_userid: firstUid });
       await fbPut(userUrl, alreadyResponse);
 
       return res.status(200).json(alreadyResponse);
     }
 
     // ----------------------------------------------------------
-    // CASE 3: जर युजर पहिल्यांदाच व्हेरिफाय करत असेल -> VERIFIED ✅
+    // CASE 3: Dusra/Tisra vegla User ID aala (firstUid !== userid)
+    // Fakt ya navin 2nd User lach DIRECT BANNED 🚫 kara! (1st User safe rahil)
     // ----------------------------------------------------------
-    const successResponse = {
-      ok: true,
-      code: 200,
-      status: "verified",
-      verified: true,
-      banned: false,
-      access: "GRANTED ✅",
+    const banResponse = {
+      ok: false,
+      code: 403,
+      status: "banned",
+      verified: false,
+      banned: true,
+      access: "DENIED 🚫",
+      reason: "MULTIPLE_ACCOUNTS_SAME_DEVICE",
       bot: bot,
-      userid: userid,
+      first_userid: firstUid,
+      current_userid: userid,
       deviceId: deviceId,
-      accounts_count: 1,
-      message: "Verification Successful ✅! First account locked to this device."
+      accounts_count: 2,
+      message: "Direct Banned 🚫! This device is already locked to 1st User (" + firstUid + ")."
     };
 
-    globalStore.devices.set(devKey, { first_userid: userid, banned: false });
-    globalStore.users.set(userKey, successResponse);
+    // Fakt 2nd User chya account var Ban save kara, 1st User chya record la hat lavu naka!
+    globalStore.users.set(userKey, banResponse);
+    await fbPut(userUrl, banResponse);
 
-    await fbPut(deviceUrl, { first_userid: userid, banned: false });
-    await fbPut(userUrl, successResponse);
-
-    return res.status(200).json(successResponse);
+    return res.status(200).json(banResponse);
   }
 
   return res.status(405).json({ ok: false, message: "Method Not Allowed" });
