@@ -22,7 +22,6 @@
       overflow-x: hidden;
     }
 
-    /* Animated Aurora Background Orbs */
     body::before, body::after {
       content: '';
       position: fixed;
@@ -34,25 +33,13 @@
       opacity: 0.45;
       pointer-events: none;
     }
-    body::before {
-      top: -80px;
-      left: -80px;
-      background: #6366f1;
-    }
-    body::after {
-      bottom: -80px;
-      right: -80px;
-      background: #06b6d4;
-    }
+    body::before { top: -80px; left: -80px; background: #6366f1; }
+    body::after { bottom: -80px; right: -80px; background: #06b6d4; }
 
-    .wrapper {
-      width: 100%;
-      max-width: 440px;
-      z-index: 1;
-    }
+    .wrapper { width: 100%; max-width: 440px; z-index: 1; }
 
     .card {
-      background: linear-gradient(165deg, rgba(24, 24, 38, 0.88), rgba(10, 10, 18, 0.94));
+      background: linear-gradient(165deg, rgba(24, 24, 38, 0.9), rgba(10, 10, 18, 0.95));
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -65,19 +52,9 @@
       overflow: hidden;
     }
 
-    /* Theme States */
-    .card.scanning {
-      border-color: rgba(99, 102, 241, 0.45);
-      box-shadow: 0 20px 55px rgba(99, 102, 241, 0.2);
-    }
-    .card.verified {
-      border-color: rgba(16, 185, 129, 0.65);
-      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.28);
-    }
-    .card.already {
-      border-color: rgba(6, 182, 212, 0.65);
-      box-shadow: 0 20px 60px rgba(6, 182, 212, 0.28);
-    }
+    .card.scanning { border-color: rgba(99, 102, 241, 0.45); box-shadow: 0 20px 55px rgba(99, 102, 241, 0.2); }
+    .card.verified { border-color: rgba(16, 185, 129, 0.65); box-shadow: 0 20px 60px rgba(16, 185, 129, 0.28); }
+    .card.already { border-color: rgba(6, 182, 212, 0.65); box-shadow: 0 20px 60px rgba(6, 182, 212, 0.28); }
     .card.banned {
       border-color: rgba(244, 63, 94, 0.75);
       box-shadow: 0 20px 60px rgba(244, 63, 94, 0.35);
@@ -92,7 +69,6 @@
       80% { transform: translateX(5px); }
     }
 
-    /* Status Pill */
     .status-pill {
       display: inline-flex;
       align-items: center;
@@ -108,35 +84,14 @@
       color: #a5b4fc;
       border: 1px solid rgba(99, 102, 241, 0.35);
     }
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #818cf8;
-      box-shadow: 0 0 8px #818cf8;
-    }
-    .verified .status-pill {
-      background: rgba(16, 185, 129, 0.14);
-      color: #6ee7b7;
-      border-color: rgba(16, 185, 129, 0.4);
-    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #818cf8; box-shadow: 0 0 8px #818cf8; }
+    .verified .status-pill { background: rgba(16, 185, 129, 0.14); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.4); }
     .verified .dot { background: #10b981; box-shadow: 0 0 8px #10b981; }
-
-    .already .status-pill {
-      background: rgba(6, 182, 212, 0.14);
-      color: #67e8f9;
-      border-color: rgba(6, 182, 212, 0.4);
-    }
+    .already .status-pill { background: rgba(6, 182, 212, 0.14); color: #67e8f9; border-color: rgba(6, 182, 212, 0.4); }
     .already .dot { background: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
-
-    .banned .status-pill {
-      background: rgba(244, 63, 94, 0.15);
-      color: #fda4af;
-      border-color: rgba(244, 63, 94, 0.4);
-    }
+    .banned .status-pill { background: rgba(244, 63, 94, 0.15); color: #fda4af; border-color: rgba(244, 63, 94, 0.4); }
     .banned .dot { background: #f43f5e; box-shadow: 0 0 8px #f43f5e; }
 
-    /* Center Emblem */
     .emblem-box {
       width: 96px;
       height: 96px;
@@ -149,65 +104,23 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1.5px solid rgba(99, 102, 241, 0.45);
       box-shadow: inset 0 0 25px rgba(99, 102, 241, 0.2);
-      position: relative;
     }
-    .scanning .emblem-box {
-      animation: floatPulse 1.8s infinite ease-in-out;
-    }
-    .verified .emblem-box {
-      border-color: #10b981;
-      background: rgba(16, 185, 129, 0.1);
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.35), inset 0 0 20px rgba(16, 185, 129, 0.2);
-    }
-    .already .emblem-box {
-      border-color: #06b6d4;
-      background: rgba(6, 182, 212, 0.1);
-      box-shadow: 0 0 30px rgba(6, 182, 212, 0.35), inset 0 0 20px rgba(6, 182, 212, 0.2);
-    }
-    .banned .emblem-box {
-      border-color: #f43f5e;
-      background: rgba(244, 63, 94, 0.1);
-      box-shadow: 0 0 30px rgba(244, 63, 94, 0.4), inset 0 0 20px rgba(244, 63, 94, 0.25);
-    }
+    .scanning .emblem-box { animation: floatPulse 1.8s infinite ease-in-out; }
+    .verified .emblem-box { border-color: #10b981; background: rgba(16, 185, 129, 0.1); box-shadow: 0 0 30px rgba(16, 185, 129, 0.35); }
+    .already .emblem-box { border-color: #06b6d4; background: rgba(6, 182, 212, 0.1); box-shadow: 0 0 30px rgba(6, 182, 212, 0.35); }
+    .banned .emblem-box { border-color: #f43f5e; background: rgba(244, 63, 94, 0.1); box-shadow: 0 0 30px rgba(244, 63, 94, 0.4); }
 
     @keyframes floatPulse {
       0%, 100% { transform: translateY(0) scale(1); }
       50% { transform: translateY(-4px) scale(1.04); }
     }
 
-    h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
-    }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .subtitle { font-size: 13.5px; color: #94a3b8; line-height: 1.55; margin-bottom: 22px; }
 
-    .subtitle {
-      font-size: 13.5px;
-      color: #94a3b8;
-      line-height: 1.55;
-      margin-bottom: 22px;
-    }
+    .loader-track { width: 100%; height: 7px; background: rgba(255, 255, 255, 0.06); border-radius: 99px; overflow: hidden; margin-bottom: 20px; }
+    .loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #06b6d4, #10b981); border-radius: 99px; transition: width 0.35s ease; }
 
-    /* Progress Bar */
-    .loader-track {
-      width: 100%;
-      height: 7px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-    .loader-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #6366f1, #06b6d4, #10b981);
-      border-radius: 99px;
-      transition: width 0.35s ease;
-    }
-
-    /* Info Stats Card */
     .stats-card {
       background: rgba(0, 0, 0, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.07);
@@ -217,23 +130,11 @@
       display: none;
       text-align: left;
     }
-    .stat-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 12.5px;
-    }
+    .stat-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 12.5px; }
     .stat-item:last-child { border-bottom: none; }
     .stat-label { color: #64748b; font-weight: 500; }
-    .stat-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      color: #f1f5f9;
-    }
+    .stat-value { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #f1f5f9; }
 
-    /* Live API Response Viewer */
     .code-panel {
       background: #07090e;
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -271,7 +172,6 @@
     pre.cyan-code { color: #22d3ee; }
     pre.red-code { color: #fb7185; }
 
-    /* Buttons */
     .main-btn {
       display: none;
       width: 100%;
@@ -285,19 +185,12 @@
       letter-spacing: 0.4px;
       background: linear-gradient(135deg, #10b981, #059669);
       box-shadow: 0 12px 25px rgba(16, 185, 129, 0.35);
-      transition: transform 0.2s ease;
+      border: none;
+      cursor: pointer;
     }
-    .main-btn:active { transform: scale(0.98); }
-    .main-btn.cyan-btn {
-      background: linear-gradient(135deg, #06b6d4, #2563eb);
-      box-shadow: 0 12px 25px rgba(6, 182, 212, 0.35);
-    }
-    .main-btn.red-btn {
-      background: linear-gradient(135deg, #f43f5e, #be123c);
-      box-shadow: 0 12px 25px rgba(244, 63, 94, 0.35);
-    }
+    .main-btn.cyan-btn { background: linear-gradient(135deg, #06b6d4, #2563eb); box-shadow: 0 12px 25px rgba(6, 182, 212, 0.35); }
+    .main-btn.red-btn { background: linear-gradient(135deg, #f43f5e, #be123c); box-shadow: 0 12px 25px rgba(244, 63, 94, 0.35); }
 
-    /* API Docs Preview (When opened without ?userid) */
     #docsView { display: none; text-align: left; }
     .url-box {
       background: rgba(255, 255, 255, 0.04);
@@ -340,11 +233,10 @@
         <pre id="apiCode"></pre>
       </div>
 
-      <!-- API Preview Mode (Shown when website is opened without ?userid) -->
       <div id="docsView">
         <div class="url-box">
           <b>🔗 Verification Link Format:</b><br>
-          https://verification-sigma-flax.vercel.app/?userid=7335163273&bot=kumarmakerbot
+          https://verification-sigma-flax.vercel.app/?userid=7335163273&bot=Kumar_api_bot
         </div>
 
         <div class="code-panel green" style="display:block;">
@@ -370,10 +262,6 @@
           </div>
           <pre class="red-code" id="docBanned"></pre>
         </div>
-
-        <a href="?userid=7335163273&bot=kumarmakerbot" class="main-btn cyan-btn" style="display:block; text-align:center;">
-          ⚡ TEST VERIFICATION NOW
-        </a>
       </div>
 
       <a href="#" id="botButton" class="main-btn">🚀 RETURN TO BOT</a>
@@ -386,7 +274,7 @@
       const ctx = canvas.getContext('2d');
       ctx.textBaseline = 'top';
       ctx.font = '14px Arial';
-      ctx.fillText('Device_Shield_v4', 2, 2);
+      ctx.fillText('Device_Shield_v5', 2, 2);
       const raw = [
         navigator.userAgent,
         screen.width + 'x' + screen.height,
@@ -408,8 +296,8 @@
 
     async function startVerification() {
       const params = new URLSearchParams(window.location.search);
-      const userId = params.get('userid');
-      const botName = (params.get('bot') || 'kumarmakerbot').replace('@', '').trim();
+      const userId = params.get('userid') ? String(params.get('userid')).trim() : '';
+      const botName = (params.get('bot') || 'Kumar_api_bot').replace('@', '').trim();
 
       const card = document.getElementById('card');
       const badgeText = document.getElementById('badgeText');
@@ -425,7 +313,6 @@
       const botButton = document.getElementById('botButton');
       const docsView = document.getElementById('docsView');
 
-      // Jar fakt https://verification-sigma-flax.vercel.app/ ughadli asel
       if (!userId) {
         loaderBox.style.display = 'none';
         badgeText.innerText = 'API GATEWAY ACTIVE';
@@ -435,60 +322,41 @@
         docsView.style.display = 'block';
 
         document.getElementById('docSuccess').innerText = JSON.stringify({
-          ok: true,
-          code: 200,
-          status: "verified",
-          verified: true,
-          banned: false,
-          bot: "kumarmakerbot",
-          userid: "7335163273",
-          deviceId: "DEV-5109D533",
+          ok: true, code: 200, status: "verified", verified: true, banned: false,
+          bot: "kumar_api_bot", userid: "7335163273", deviceId: "DEV-5718EFCE",
           message: "Verification Successful ✅"
         }, null, 2);
 
         document.getElementById('docAlready').innerText = JSON.stringify({
-          ok: true,
-          code: 200,
-          status: "already_verified",
-          verified: true,
-          banned: false,
-          bot: "kumarmakerbot",
-          userid: "7335163273",
-          deviceId: "DEV-5109D533",
+          ok: true, code: 200, status: "already_verified", verified: true, banned: false,
+          bot: "kumar_api_bot", userid: "7335163273", deviceId: "DEV-5718EFCE",
           message: "Already Verified ✅! Your account is already verified on this device."
         }, null, 2);
 
         document.getElementById('docBanned').innerText = JSON.stringify({
-          ok: false,
-          code: 403,
-          status: "banned",
-          verified: false,
-          banned: true,
-          bot: "kumarmakerbot",
-          first_userid: "7335163273",
-          current_userid: "9988776655",
-          deviceId: "DEV-5109D533",
-          message: "Direct Banned 🚫! Multiple accounts used on the same device."
+          ok: false, code: 403, status: "banned", verified: false, banned: true,
+          bot: "kumar_api_bot", first_userid: "7335163273", current_userid: "9988776655",
+          deviceId: "DEV-5718EFCE", message: "Direct Banned 🚫! 2 different accounts used on the same device."
         }, null, 2);
         return;
       }
 
       loaderBar.style.width = '40%';
-      await sleep(300);
+      await sleep(250);
       subText.innerText = 'Checking single-account security policy...';
       loaderBar.style.width = '85%';
-      await sleep(350);
+      await sleep(300);
       loaderBar.style.width = '100%';
-      await sleep(250);
+      await sleep(200);
 
-      let deviceId = localStorage.getItem('shield_device_id_v4');
+      let deviceId = localStorage.getItem('shield_device_id_v5');
       if (!deviceId) {
         deviceId = getHardwareFingerprint();
-        localStorage.setItem('shield_device_id_v4', deviceId);
+        localStorage.setItem('shield_device_id_v5', deviceId);
       }
 
       const cleanBot = botName.toLowerCase();
-      const localKey = `shield_user_v4_${cleanBot}`;
+      const localKey = `shield_user_v5_${cleanBot}`;
       const savedLocalUser = localStorage.getItem(localKey);
 
       try {
@@ -496,14 +364,37 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userid: String(userId).trim(),
+            userid: userId,
             bot: cleanBot,
             deviceId: deviceId,
-            previousUser: savedLocalUser
+            previousUser: (savedLocalUser && savedLocalUser !== 'null' && savedLocalUser !== 'undefined') ? savedLocalUser : ''
           })
         });
 
-        const data = await response.json();
+        let data = await response.json();
+
+        // EXTRA SAFETY: Jar 1st User ID aani 2nd User ID same astil (7335163273 === 7335163273), tar kadhihi Ban dakhavu naka!
+        if (
+          data.status === 'banned' &&
+          String(data.first_userid || '').trim() === String(data.current_userid || userId).trim()
+        ) {
+          const isAlready = (savedLocalUser === userId);
+          data = {
+            ok: true,
+            code: 200,
+            status: isAlready ? "already_verified" : "verified",
+            verified: true,
+            banned: false,
+            access: isAlready ? "ALREADY VERIFIED ✅" : "GRANTED ✅",
+            bot: cleanBot,
+            userid: userId,
+            deviceId: deviceId,
+            accounts_count: 1,
+            message: isAlready
+              ? "Already Verified ✅! Your account is already verified on this device."
+              : "Verification Successful ✅! First account locked to this device."
+          };
+        }
 
         loaderBox.style.display = 'none';
         statsCard.style.display = 'block';
@@ -513,8 +404,11 @@
 
         apiCode.innerText = JSON.stringify(data, null, 2);
 
-        // 1. DIRECT BANNED (Fakt jevha 2 vegvegle User IDs astil)
-        if (data.status === 'banned' || data.banned === true) {
+        // 1. DIRECT BANNED (Fakt jevha 2 kharach vegvegle User IDs astil)
+        if (
+          (data.status === 'banned' || data.banned === true) &&
+          String(data.first_userid) !== String(data.current_userid)
+        ) {
           card.className = 'card banned';
           apiPanel.className = 'code-panel red';
           apiCode.className = 'red-code';
@@ -536,16 +430,16 @@
             <div class="stat-item"><span class="stat-label">Status</span><span class="stat-value" style="color:#fb7185">DIRECT BANNED 🚫</span></div>
           `;
         }
-        // 2. ALREADY VERIFIED (Jevha toch user parat link ughdel)
+        // 2. ALREADY VERIFIED
         else if (data.status === 'already_verified') {
-          localStorage.setItem(localKey, String(userId).trim());
+          localStorage.setItem(localKey, userId);
           card.className = 'card already';
           apiPanel.className = 'code-panel cyan';
           apiCode.className = 'cyan-code';
           badgeText.innerText = 'ALREADY VERIFIED ✅';
           iconBox.innerText = '🛡️';
           titleText.innerText = 'Already Verified!';
-          subText.innerText = 'Your account is already verified on this device. No action needed!';
+          subText.innerText = 'Your account is already verified on this device. You can continue using the bot!';
           httpTag.innerText = 'HTTP 200 OK';
           httpTag.style.color = '#22d3ee';
 
@@ -561,7 +455,7 @@
         }
         // 3. FIRST TIME VERIFIED
         else {
-          localStorage.setItem(localKey, String(userId).trim());
+          localStorage.setItem(localKey, userId);
           card.className = 'card verified';
           apiPanel.className = 'code-panel green';
           badgeText.innerText = 'VERIFICATION COMPLETE ✅';
